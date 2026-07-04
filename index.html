@@ -4,173 +4,246 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kryptorious — Developer Tool Suite | Ship Better Code</title>
-<meta name="description" content="23 open-source developer tools. Scaffold, audit, secure, test, and ship faster — from CLI and CI. $39 for the full premium suite.">
+<meta name="description" content="23 developer tools across PyPI, GitHub Actions, and npm. Scaffold, audit, secure, test, and ship faster. Premium suite — $39 lifetime.">
 <meta property="og:title" content="Kryptorious — Developer Tool Suite">
-<meta property="og:description" content="23 developer tools. One $39 license. Ship better code.">
+<meta property="og:description" content="23 tools. One $39 license. Ship better code.">
+<script src="https://gumroad.com/js/gumroad.js"></script>
 <style>
-  :root { --bg: #0a0a0f; --surface: #13131a; --border: #1e1e2e; --text: #cdd6f4; --sub: #6c7086; --blue: #89b4fa; --green: #a6e3a1; --purple: #cba6f7; --red: #f38ba8; --yellow: #f9e2af; }
+  :root { --bg: #0a0a0f; --surface: #13131a; --border: #1e1e2e; --text: #cdd6f4; --sub: #6c7086; --blue: #89b4fa; --green: #a6e3a1; --purple: #cba6f7; --red: #f38ba8; --yellow: #f9e2af; --orange: #fab387; }
   * { margin:0;padding:0;box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height:1.6; }
-  .container { max-width:960px; margin:0 auto; padding:0 1.5rem; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; line-height:1.6; }
+  .container { max-width:1040px; margin:0 auto; padding:0 1.5rem; }
+  nav { display:flex; justify-content:space-between; align-items:center; padding:1.25rem 0; }
+  .logo { font-weight:800; font-size:1.2rem; color:var(--blue); text-decoration:none; }
+  .nav-links { display:flex; gap:1.5rem; }
+  .nav-links a { color:var(--sub); text-decoration:none; font-size:0.9rem; }
+  .nav-links a:hover { color:var(--text); }
 
-  header { text-align:center; padding:5rem 0 3rem; }
+  header { text-align:center; padding:4rem 0 3rem; }
   .badge { display:inline-block; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:0.3rem 1rem; font-size:0.85rem; color:var(--sub); margin-bottom:1.5rem; }
   .badge span { color:var(--green); font-weight:700; }
   h1 { font-size:3rem; font-weight:800; line-height:1.15; margin-bottom:1rem; }
   h1 em { color:var(--blue); font-style:normal; }
   .hero-sub { font-size:1.2rem; color:var(--sub); max-width:600px; margin:0 auto 2rem; }
-  .hero-cta { display:inline-flex; gap:0.75rem; align-items:center; }
-  .btn { display:inline-block; padding:0.85rem 2rem; border-radius:8px; font-weight:700; font-size:1.05rem; text-decoration:none; transition:transform 0.15s; }
-  .btn:hover { transform:translateY(-1px); }
+  .hero-cta { display:inline-flex; gap:0.75rem; align-items:center; flex-wrap:wrap; justify-content:center; }
+  .btn { display:inline-block; padding:0.85rem 2rem; border-radius:8px; font-weight:700; font-size:1.05rem; text-decoration:none; cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; border:none; }
+  .btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.3); }
   .btn-primary { background:var(--green); color:#0a0a0f; }
-  .btn-ghost { border:2px solid var(--border); color:var(--text); }
+  .btn-ghost { background:transparent; border:2px solid var(--border); color:var(--text); }
+  .btn-gumroad { background:#ff90e8; color:#0a0a0f; }
 
-  .stats { display:flex; gap:3rem; justify-content:center; margin:2rem 0; flex-wrap:wrap; }
+  .stats { display:flex; gap:3rem; justify-content:center; margin:2.5rem 0; flex-wrap:wrap; }
   .stat { text-align:center; }
   .stat-num { font-size:2.25rem; font-weight:800; color:var(--blue); }
   .stat-label { color:var(--sub); font-size:0.9rem; }
 
-  .section { margin:4rem 0; }
-  h2 { font-size:1.75rem; font-weight:700; margin-bottom:1.5rem; }
-  h2 em { color:var(--purple); font-style:normal; }
+  .section { margin:5rem 0; }
+  h2 { font-size:1.75rem; font-weight:700; margin-bottom:0.5rem; }
+  .section-sub { color:var(--sub); margin-bottom:2rem; }
 
-  .features { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; }
-  .feature { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
-  .feature-icon { font-size:1.5rem; margin-bottom:0.5rem; }
-  .feature h3 { font-size:1.05rem; margin-bottom:0.4rem; }
-  .feature p { color:var(--sub); font-size:0.9rem; }
+  .platform-tabs { display:flex; gap:0.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+  .tab { padding:0.5rem 1rem; border-radius:6px; font-size:0.85rem; font-weight:600; cursor:pointer; background:var(--surface); border:1px solid var(--border); color:var(--sub); }
+  .tab.active { background:var(--blue); color:#0a0a0f; border-color:var(--blue); }
 
-  .product-showcase { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; }
-  .product { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
-  .product .tag { display:inline-block; padding:0.15rem 0.6rem; border-radius:4px; font-size:0.72rem; font-weight:700; margin-bottom:0.75rem; }
+  .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem; }
+  .product-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; transition:border-color 0.2s; }
+  .product-card:hover { border-color:var(--blue); }
+  .product-card .tag { display:inline-block; padding:0.15rem 0.6rem; border-radius:4px; font-size:0.7rem; font-weight:700; margin-bottom:0.75rem; text-transform:uppercase; letter-spacing:0.5px; }
   .tag-py { background:rgba(137,180,250,0.15); color:var(--blue); }
   .tag-gh { background:rgba(203,166,247,0.15); color:var(--purple); }
   .tag-npm { background:rgba(249,226,175,0.15); color:var(--yellow); }
-  .product h3 { font-size:1.1rem; margin-bottom:0.35rem; }
-  .product p { color:var(--sub); font-size:0.88rem; margin-bottom:0.75rem; }
-  .product code { display:block; background:#0a0a0f; padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem; color:var(--green); overflow-x:auto; }
+  .product-card h3 { font-size:1rem; margin-bottom:0.3rem; }
+  .product-card .desc { color:var(--sub); font-size:0.85rem; margin-bottom:0.75rem; min-height:2.5rem; }
+  .product-card code { display:block; background:#0a0a0f; padding:0.5rem 0.75rem; border-radius:6px; font-size:0.78rem; color:var(--green); overflow-x:auto; white-space:nowrap; }
+  .product-card .links { margin-top:0.75rem; display:flex; gap:0.75rem; }
+  .product-card .links a { color:var(--sub); font-size:0.8rem; text-decoration:none; }
+  .product-card .links a:hover { color:var(--blue); }
 
-  .pricing { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:2.5rem; text-align:center; }
-  .pricing h2 { margin-bottom:0.5rem; }
-  .price { font-size:3rem; font-weight:800; color:var(--green); }
-  .price-sub { color:var(--sub); margin-bottom:1.5rem; }
-  .pricing-features { text-align:left; max-width:350px; margin:1.5rem auto; }
-  .pricing-features li { padding:0.3rem 0; color:var(--sub); font-size:0.92rem; }
-  .pricing-features li::before { content:"✓ "; color:var(--green); }
+  .pricing-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+  .pricing-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; position:relative; }
+  .pricing-card.featured { border-color:var(--green); box-shadow:0 0 20px rgba(166,227,161,0.1); }
+  .pricing-card .popular { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--green); color:#0a0a0f; padding:0.2rem 1rem; border-radius:12px; font-size:0.75rem; font-weight:700; }
+  .pricing-card h3 { font-size:1.2rem; margin-bottom:0.5rem; }
+  .price { font-size:3rem; font-weight:800; }
+  .price-free { color:var(--blue); }
+  .price-premium { color:var(--green); }
+  .price-sub { color:var(--sub); margin-bottom:1.5rem; font-size:0.9rem; }
+  .pricing-card ul { text-align:left; list-style:none; margin-bottom:1.5rem; }
+  .pricing-card li { padding:0.4rem 0; color:var(--sub); font-size:0.88rem; }
+  .pricing-card li::before { content:"✓ "; color:var(--green); font-weight:700; }
 
-  footer { text-align:center; padding:3rem 0; color:var(--sub); font-size:0.85rem; border-top:1px solid var(--border); }
+  .faq { max-width:700px; margin:0 auto; }
+  .faq-item { border-bottom:1px solid var(--border); padding:1.25rem 0; }
+  .faq-item h4 { margin-bottom:0.35rem; cursor:pointer; }
+  .faq-item p { color:var(--sub); font-size:0.9rem; }
+
+  footer { text-align:center; padding:3rem 0; color:var(--sub); font-size:0.85rem; border-top:1px solid var(--border); margin-top:3rem; }
   footer a { color:var(--blue); }
+  .footer-links { display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; margin:1rem 0; }
 
-  @media(max-width:640px) { h1 { font-size:2rem; } .stats { gap:1.5rem; } }
+  .hidden { display:none; }
+
+  @media(max-width:640px) { h1 { font-size:2rem; } .stats { gap:1.5rem; } .product-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <div class="container">
 
-<header>
-  <div class="badge"><span>23</span> tools across PyPI · GitHub Actions · npm</div>
-  <h1>Ship <em>better code</em><br>in half the time</h1>
-  <p class="hero-sub">One tool suite that replaces 15+ separate utilities. Scaffold, audit, secure, test, and ship — from CLI and CI.</p>
-  <div class="hero-cta">
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-primary">Get Premium — $39</a>
-    <a href="#products" class="btn btn-ghost">See all tools</a>
+<nav>
+  <a href="/" class="logo">Kryptorious</a>
+  <div class="nav-links">
+    <a href="#products">Products</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://github.com/CodeGero">GitHub</a>
   </div>
+</nav>
 
+<header>
+  <div class="badge"><span>23</span> developer tools · PyPI · GitHub Actions · npm</div>
+  <h1>Ship <em>better code</em><br>in half the time</h1>
+  <p class="hero-sub">One tool suite replacing 15+ separate utilities. Scaffold, audit, secure, test, and ship — from CLI and CI. Free tier forever. Premium for power users.</p>
+  <div class="hero-cta">
+    <a href="https://gumroad.com/l/jbvet?wanted=true" class="btn btn-gumroad" data-gumroad-single-product="true">Buy Premium — $39</a>
+    <a href="#products" class="btn btn-ghost">Browse all tools ↓</a>
+  </div>
   <div class="stats">
     <div class="stat"><div class="stat-num">23</div><div class="stat-label">Products</div></div>
     <div class="stat"><div class="stat-num">3</div><div class="stat-label">Platforms</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Free tier</div></div>
-    <div class="stat"><div class="stat-num">$39</div><div class="stat-label">Premium</div></div>
+    <div class="stat"><div class="stat-num">$39</div><div class="stat-label">Lifetime</div></div>
   </div>
 </header>
 
-<div class="section">
-  <h2>What you <em>get</em></h2>
-  <div class="features">
-    <div class="feature">
-      <div class="feature-icon">🏗️</div>
-      <h3>Project Scaffolding</h3>
-      <p>Generate production-ready projects in 2 seconds. 9 templates — Python, Go, Rust, React, Node.js, full-stack. CI/CD and Docker pre-configured.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🛡️</div>
-      <h3>Quality Gates</h3>
-      <p>Lint, format, type-check, security scan, and test — all in one command or one GitHub Action. Catch issues before they hit code review.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🔒</div>
-      <h3>Security Scanning</h3>
-      <p>Detect hardcoded secrets, dependency vulnerabilities, and Dockerfile misconfigurations. Stop leaks before they reach production.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🚀</div>
-      <h3>Release Automation</h3>
-      <p>Auto-detect version bumps from commits, generate changelogs, create GitHub releases. One command from commit to shipped.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🤖</div>
-      <h3>AI/ML Code Audit</h3>
-      <p>Catch AI-generated code issues — hallucinated APIs, missing error handling, data leakage. Purpose-built for the LLM era.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <h3>CI-Native</h3>
-      <p>12 GitHub Actions that work in any workflow. PR quality gates, stale management, dependency updates — plug and play.</p>
-    </div>
-  </div>
-</div>
-
 <div class="section" id="products">
-  <h2>Top <em>tools</em></h2>
-  <div class="product-showcase">
-    <div class="product">
-      <span class="tag tag-py">PyPI</span>
-      <h3>DevFlow</h3>
-      <p>Scaffold, audit, fix, and ship projects. 9 templates, CI/CD pipeline generator (premium).</p>
-      <code>pip install kryptorious-devflow</code>
+  <h2>All <em>Products</em></h2>
+  <p class="section-sub">Filter by platform. Every tool is free to use. Premium unlocks advanced features across the entire suite.</p>
+
+  <div class="platform-tabs">
+    <button class="tab active" onclick="filterProducts('all')">All (23)</button>
+    <button class="tab" onclick="filterProducts('pypi')">PyPI (7)</button>
+    <button class="tab" onclick="filterProducts('github')">GitHub Actions (12)</button>
+    <button class="tab" onclick="filterProducts('npm')">npm (4)</button>
+  </div>
+
+  <div class="product-grid" id="product-grid"></div>
+</div>
+
+<div class="section" id="pricing">
+  <h2>Simple <em>Pricing</em></h2>
+  <p class="section-sub">Free forever for core features. One lifetime payment for the full suite.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3>Free</h3>
+      <div class="price price-free">$0</div>
+      <div class="price-sub">forever</div>
+      <ul>
+        <li>All 23 tools — core features</li>
+        <li>Unlimited personal use</li>
+        <li>Unlimited commercial use</li>
+        <li>Community support</li>
+        <li>MIT licensed</li>
+      </ul>
+      <a href="#products" class="btn btn-ghost" style="width:100%">Browse tools</a>
     </div>
-    <div class="product">
-      <span class="tag tag-gh">GitHub Action</span>
-      <h3>Python Guardian</h3>
-      <p>All-in-one quality gate. Ruff + Black + Mypy + Bandit + Pytest in one step.</p>
-      <code>uses: CodeGero/python-guardian@v1</code>
-    </div>
-    <div class="product">
-      <span class="tag tag-npm">npm</span>
-      <h3>PromptKit</h3>
-      <p>AI prompt template manager. Validate, version, A/B test your LLM prompts.</p>
-      <code>npx kryptorious-promptkit</code>
+    <div class="pricing-card featured">
+      <div class="popular">Most Popular</div>
+      <h3>Premium Suite</h3>
+      <div class="price price-premium">$39</div>
+      <div class="price-sub">one-time · lifetime</div>
+      <ul>
+        <li>Everything in Free</li>
+        <li>CI/CD pipeline generator</li>
+        <li>Advanced rule packs</li>
+        <li>Prompt A/B testing</li>
+        <li>Slack/Discord notifications</li>
+        <li>Historical analytics dashboards</li>
+        <li>Team config sharing</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="https://gumroad.com/l/jbvet?wanted=true" class="btn btn-gumroad" style="width:100%" data-gumroad-single-product="true">Get Premium — $39</a>
     </div>
   </div>
 </div>
 
-<div class="section">
-  <div class="pricing">
-    <h2>One license. <em>All 23 tools.</em></h2>
-    <div class="price">$39</div>
-    <div class="price-sub">one-time · lifetime updates · all platforms</div>
-    <ul class="pricing-features">
-      <li>All 7 PyPI packages — premium features</li>
-      <li>All 12 GitHub Actions — advanced configs</li>
-      <li>All 4 npm packages — full feature set</li>
-      <li>Custom rule packs and policies</li>
-      <li>Slack/Discord notifications</li>
-      <li>Team configuration sharing</li>
-    </ul>
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-primary">Get Premium — $39</a>
+<div class="section" id="faq">
+  <h2>FAQ</h2>
+  <div class="faq">
+    <div class="faq-item"><h4>What do I get with Premium?</h4><p>One license unlocks premium features across all 23 tools. CI/CD pipeline generation, prompt A/B testing, advanced rule packs, analytics dashboards, Slack notifications, and team sharing. Lifetime access, no subscription.</p></div>
+    <div class="faq-item"><h4>Is there a free trial?</h4><p>Every tool has a generous free tier. All core features are free forever. You only pay if you want the advanced features.</p></div>
+    <div class="faq-item"><h4>How do I install the tools?</h4><p>PyPI tools: <code>pip install kryptorious-&lt;name&gt;</code>. GitHub Actions: <code>uses: CodeGero/&lt;name&gt;@v1</code>. npm: <code>npm install -g kryptorious-&lt;name&gt;</code>. Each product page has exact instructions.</p></div>
+    <div class="faq-item"><h4>Can I use these commercially?</h4><p>Yes. All tools are MIT licensed. Free for personal and commercial use. Premium adds advanced features but the core is always free.</p></div>
+    <div class="faq-item"><h4>How do I get support?</h4><p>Free: GitHub issues on each repo. Premium: priority email support + Slack community.</p></div>
   </div>
 </div>
 
 <footer>
-  <p>Built by <a href="https://github.com/CodeGero">Kryptorious Quantum Biosciences</a></p>
-  <p style="margin-top:0.5rem">
-    <a href="https://github.com/CodeGero">GitHub</a> ·
-    <a href="https://pypi.org/user/kryptorious/">PyPI</a> ·
-    <a href="https://www.npmjs.com/~kryptorious">npm</a> ·
+  <div class="footer-links">
+    <a href="https://github.com/CodeGero">GitHub</a>
+    <a href="https://pypi.org/user/kryptorious/">PyPI</a>
+    <a href="https://www.npmjs.com/~kryptorious">npm</a>
     <a href="https://kryptorious.gumroad.com/l/jbvet">Gumroad</a>
-  </p>
+  </div>
+  <p>Kryptorious Quantum Biosciences, Inc.</p>
 </footer>
 
 </div>
+
+<script>
+const products = [
+  {name:"DevFlow",desc:"Scaffold, audit, fix, ship — 9 templates, CI/CD pipeline generator.",install:"pip install kryptorious-devflow",platform:"pypi",url:"https://pypi.org/project/kryptorious-devflow/"},
+  {name:"GitSweep",desc:"Find stale branches, large files, analyze commit history.",install:"pip install kryptorious-gitsweep",platform:"pypi",url:"https://pypi.org/project/kryptorious-gitsweep/"},
+  {name:"DataForge",desc:"Universal converter — JSON ↔ YAML ↔ CSV ↔ XML.",install:"pip install kryptorious-dataforge",platform:"pypi",url:"https://pypi.org/project/kryptorious-dataforge/"},
+  {name:"EnvGuard",desc:"Validate, generate, audit .env files. Catch secrets.",install:"pip install kryptorious-envguard",platform:"pypi",url:"https://pypi.org/project/kryptorious-envguard/"},
+  {name:"TestForge",desc:"Auto-generate pytest tests from Python source.",install:"pip install kryptorious-testforge",platform:"pypi",url:"https://pypi.org/project/kryptorious-testforge/"},
+  {name:"CSVClean",desc:"Analyze CSVs — encoding, types, duplicates, health score.",install:"pip install kryptorious-csvclean",platform:"pypi",url:"https://pypi.org/project/kryptorious-csvclean/"},
+  {name:"JSONGuard",desc:"Validate, format, analyze JSON. Catch broken files.",install:"pip install kryptorious-jsonguard",platform:"pypi",url:"https://pypi.org/project/kryptorious-jsonguard/"},
+  {name:"Python Guardian",desc:"All-in-one quality gate: ruff + black + mypy + bandit + pytest.",install:"CodeGero/python-guardian@v1",platform:"github",url:"https://github.com/CodeGero/python-guardian"},
+  {name:"Release Forge",desc:"Auto-detect version bump, changelog, GitHub release.",install:"CodeGero/release-forge@v1",platform:"github",url:"https://github.com/CodeGero/release-forge"},
+  {name:"PR Sentinel",desc:"Auto-label, check descriptions, warn on large PRs.",install:"CodeGero/pr-sentinel@v1",platform:"github",url:"https://github.com/CodeGero/pr-sentinel"},
+  {name:"Secret Scanner",desc:"Scan PRs for hardcoded secrets before they ship.",install:"CodeGero/secret-scanner@v1",platform:"github",url:"https://github.com/CodeGero/secret-scanner"},
+  {name:"Stale Bot",desc:"Auto-close stale issues and PRs after inactivity.",install:"CodeGero/stale-bot@v1",platform:"github",url:"https://github.com/CodeGero/stale-bot"},
+  {name:"Docker Guardian",desc:"Scan Dockerfiles for security and best practices.",install:"CodeGero/docker-guardian@v1",platform:"github",url:"https://github.com/CodeGero/docker-guardian"},
+  {name:"Spell Guardian",desc:"Check spelling in code, docs, and markdown.",install:"CodeGero/spell-guardian@v1",platform:"github",url:"https://github.com/CodeGero/spell-guardian"},
+  {name:"Merge Guardian",desc:"Enforce reviews, checks, linked issues before merge.",install:"CodeGero/merge-guardian@v1",platform:"github",url:"https://github.com/CodeGero/merge-guardian"},
+  {name:"ML Guardian",desc:"Catch ML issues — seeds, deprecated APIs, data leakage.",install:"CodeGero/ml-guardian@v1",platform:"github",url:"https://github.com/CodeGero/ml-guardian"},
+  {name:"Dependency Bot",desc:"Auto-detect outdated deps across pip, npm, cargo, go.",install:"CodeGero/dependency-bot@v1",platform:"github",url:"https://github.com/CodeGero/dependency-bot"},
+  {name:"AI Code Lint",desc:"Catch AI-generated code patterns — hallucinated APIs, missing error handling.",install:"CodeGero/ai-lint@v1",platform:"github",url:"https://github.com/CodeGero/ai-lint"},
+  {name:"Coverage Gate",desc:"Enforce code coverage thresholds on pull requests.",install:"CodeGero/coverage-gate@v1",platform:"github",url:"https://github.com/CodeGero/coverage-gate"},
+  {name:"DevKit",desc:"Project scaffolding for Node.js — React, Express, CLI, vanilla.",install:"npx kryptorious-devkit",platform:"npm",url:"https://www.npmjs.com/package/kryptorious-devkit"},
+  {name:"EnvGuard",desc:".env validator for Node.js — check, generate, audit.",install:"npx kryptorious-envguard",platform:"npm",url:"https://www.npmjs.com/package/kryptorious-envguard"},
+  {name:"QuickLint",desc:"Zero-config ESLint + Prettier setup in one command.",install:"npx quicklint-cli",platform:"npm",url:"https://www.npmjs.com/package/quicklint-cli"},
+  {name:"PromptKit",desc:"AI prompt manager — validate, version, A/B test prompts.",install:"npx kryptorious-promptkit",platform:"npm",url:"https://www.npmjs.com/package/kryptorious-promptkit"},
+];
+
+function filterProducts(platform) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  const grid = document.getElementById('product-grid');
+  const filtered = platform === 'all' ? products : products.filter(p => p.platform === platform);
+  renderProducts(filtered);
+}
+
+function renderProducts(list) {
+  const grid = document.getElementById('product-grid');
+  const tags = {pypi:'tag-py',github:'tag-gh',npm:'tag-npm'};
+  const labels = {pypi:'PyPI',github:'GitHub Action',npm:'npm'};
+  grid.innerHTML = list.map(p => `
+    <div class="product-card">
+      <span class="tag ${tags[p.platform]}">${labels[p.platform]}</span>
+      <h3><a href="${p.url}" style="color:var(--text);text-decoration:none;">${p.name}</a></h3>
+      <p class="desc">${p.desc}</p>
+      <code>${p.install}</code>
+      <div class="links">
+        <a href="${p.url}">Docs →</a>
+        <a href="https://kryptorious.gumroad.com/l/jbvet">Premium →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+renderProducts(products);
+</script>
 </body>
 </html>
