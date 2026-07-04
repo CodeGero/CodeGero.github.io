@@ -243,7 +243,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
     <div class="pricing-card featured">
       <div class="popular">One-time payment</div>
       <h3>Premium Suite</h3><div class="price price-premium">$39</div><div class="price-sub">lifetime · all updates</div>
-      <ul><li>Everything in Free</li><li>CI/CD pipeline generator</li><li>Prompt A/B testing</li><li>Advanced rule packs</li><li>Analytics dashboards</li><li>Slack/Discord notifications</li><li>Team config sharing</li><li>Priority support</li></ul>
+      <ul><li>Everything in Free</li><li>Multi-environment configs</li><li>Approval gates</li><li>Infrastructure-as-Code templates</li><li>Prompt A/B testing</li><li>Advanced rule packs</li><li>Analytics dashboards</li><li>Priority support</li></ul>
       <a href="https://gumroad.com/l/jbvet?wanted=true" class="btn btn-gumroad" style="width:100%;justify-content:center">Get Premium — $39</a>
     </div>
   </div>
@@ -262,7 +262,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
       <tr><td>Auto-fix command</td><td class="check">✓ One command</td><td class="cross">✗</td><td class="cross">✗</td></tr>
       <tr><td>Release automation</td><td class="check">✓ Version + changelog</td><td class="cross">✗</td><td class="cross">✗</td></tr>
       <tr><td>Docker support</td><td class="check">✓ Built-in</td><td class="cross">✗</td><td class="cross">✗</td></tr>
-      <tr><td>CI/CD pipeline gen</td><td class="star">★ Premium</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>CI/CD pipeline gen</td><td class="check">✓ Real YAML output</td><td class="cross">✗</td><td class="cross">✗</td></tr>
     </table>
   </div>
 </div>
@@ -270,7 +270,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
 <div class="section reveal" id="faq">
   <h2>Questions you might <em>have</em></h2>
   <div class="faq">
-    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>What do I get with Premium?</h4><div class="answer"><p>One license unlocks premium features across all 23 tools: CI/CD pipeline generation, prompt A/B testing, advanced rule packs, analytics dashboards, Slack notifications, and team config sharing. Lifetime access, all 1.x updates included.</p></div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>What do I get with Premium?</h4><div class="answer"><p>One license unlocks premium features across all 23 tools: multi-environment pipeline configs, approval gates, infrastructure-as-code templates, prompt A/B testing, advanced rule packs, and analytics dashboards. Lifetime access, all 1.x updates included.</p></div></div>
     <div class="faq-item" onclick="this.classList.toggle('open')"><h4>Is there a free trial?</h4><div class="answer"><p>Every tool has a generous free tier — no time limit, no credit card required. You only pay if the premium features are worth it to you.</p></div></div>
     <div class="faq-item" onclick="this.classList.toggle('open')"><h4>How do I install?</h4><div class="answer"><p><strong>PyPI:</strong> <code>pip install kryptorious-&lt;name&gt;</code> · <strong>Actions:</strong> <code>uses: CodeGero/&lt;name&gt;@v1</code> · <strong>npm:</strong> <code>npm i -g kryptorious-&lt;name&gt;</code></p></div></div>
     <div class="faq-item" onclick="this.classList.toggle('open')"><h4>Commercial use?</h4><div class="answer"><p>Yes. All tools are MIT licensed — free for any use. Premium adds advanced features but core tools remain free forever.</p></div></div>
@@ -310,6 +310,10 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
     {t:'<span class="prompt">$</span> <span class="cmd">devflow ship --bump patch --push</span>',d:600},
     {t:'<span class="success">  ✓ Audit passed (94/100)  ·  v0.1.1 tagged  ·  Pushed</span>',d:400},
     {t:'<span class="highlight">  🚀 Shipped my-api v0.1.1</span>',d:800},
+    {t:'',d:500},
+    {t:'<span class="prompt">$</span> <span class="cmd">devflow pipeline --deploy docker</span>',d:600},
+    {t:'<span class="success">  ✓ Generated .github/workflows/ci.yml</span>',d:300},
+    {t:'<span class="out">  Lint · Typecheck · Security · Test · Build · Deploy · Release</span>',d:400},
     {t:'',d:500},
     {t:'<span class="prompt">$</span> <span class="cursor"></span>',d:99999},
   ];
