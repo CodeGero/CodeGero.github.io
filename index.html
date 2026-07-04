@@ -3,178 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kryptorious Tools — Developer Workflow Automation</title>
-<meta name="description" content="17 open-source developer tools for Python, GitHub Actions, and more. Scaffold, audit, secure, and ship faster.">
+<title>Kryptorious — Developer Tool Suite | Ship Better Code</title>
+<meta name="description" content="23 open-source developer tools. Scaffold, audit, secure, test, and ship faster — from CLI and CI. $39 for the full premium suite.">
+<meta property="og:title" content="Kryptorious — Developer Tool Suite">
+<meta property="og:description" content="23 developer tools. One $39 license. Ship better code.">
 <style>
-  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --purple: #bc8cff; --orange: #d2991d; --red: #f85149; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
-  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
-  header { text-align: center; padding: 4rem 0 2rem; }
-  h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-  h1 span { color: var(--accent); }
-  .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 1.5rem; }
-  .cta { display: inline-block; background: var(--green); color: #000; padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 1.05rem; }
-  .cta:hover { opacity: 0.9; }
-  .section { margin: 3rem 0; }
-  h2 { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
-  .card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
-  .card h3 a { color: var(--accent); text-decoration: none; }
-  .card h3 a:hover { text-decoration: underline; }
-  .card p { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.5rem; }
-  .card code { background: #1c2128; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.8rem; color: var(--green); }
-  .tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.72rem; font-weight: 600; margin-right: 0.3rem; }
-  .tag-pypi { background: #1a3a5c; color: var(--accent); }
-  .tag-action { background: #2d1a4e; color: var(--purple); }
-  .stats { display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0; }
-  .stat { text-align: center; }
-  .stat-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
-  .stat-label { color: var(--muted); font-size: 0.85rem; }
-  footer { text-align: center; padding: 3rem 0; color: var(--muted); font-size: 0.85rem; }
-  footer a { color: var(--accent); }
-  @media (max-width: 600px) { h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } }
+  :root { --bg: #0a0a0f; --surface: #13131a; --border: #1e1e2e; --text: #cdd6f4; --sub: #6c7086; --blue: #89b4fa; --green: #a6e3a1; --purple: #cba6f7; --red: #f38ba8; --yellow: #f9e2af; }
+  * { margin:0;padding:0;box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height:1.6; }
+  .container { max-width:960px; margin:0 auto; padding:0 1.5rem; }
+
+  header { text-align:center; padding:5rem 0 3rem; }
+  .badge { display:inline-block; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:0.3rem 1rem; font-size:0.85rem; color:var(--sub); margin-bottom:1.5rem; }
+  .badge span { color:var(--green); font-weight:700; }
+  h1 { font-size:3rem; font-weight:800; line-height:1.15; margin-bottom:1rem; }
+  h1 em { color:var(--blue); font-style:normal; }
+  .hero-sub { font-size:1.2rem; color:var(--sub); max-width:600px; margin:0 auto 2rem; }
+  .hero-cta { display:inline-flex; gap:0.75rem; align-items:center; }
+  .btn { display:inline-block; padding:0.85rem 2rem; border-radius:8px; font-weight:700; font-size:1.05rem; text-decoration:none; transition:transform 0.15s; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn-primary { background:var(--green); color:#0a0a0f; }
+  .btn-ghost { border:2px solid var(--border); color:var(--text); }
+
+  .stats { display:flex; gap:3rem; justify-content:center; margin:2rem 0; flex-wrap:wrap; }
+  .stat { text-align:center; }
+  .stat-num { font-size:2.25rem; font-weight:800; color:var(--blue); }
+  .stat-label { color:var(--sub); font-size:0.9rem; }
+
+  .section { margin:4rem 0; }
+  h2 { font-size:1.75rem; font-weight:700; margin-bottom:1.5rem; }
+  h2 em { color:var(--purple); font-style:normal; }
+
+  .features { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; }
+  .feature { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
+  .feature-icon { font-size:1.5rem; margin-bottom:0.5rem; }
+  .feature h3 { font-size:1.05rem; margin-bottom:0.4rem; }
+  .feature p { color:var(--sub); font-size:0.9rem; }
+
+  .product-showcase { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; }
+  .product { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
+  .product .tag { display:inline-block; padding:0.15rem 0.6rem; border-radius:4px; font-size:0.72rem; font-weight:700; margin-bottom:0.75rem; }
+  .tag-py { background:rgba(137,180,250,0.15); color:var(--blue); }
+  .tag-gh { background:rgba(203,166,247,0.15); color:var(--purple); }
+  .tag-npm { background:rgba(249,226,175,0.15); color:var(--yellow); }
+  .product h3 { font-size:1.1rem; margin-bottom:0.35rem; }
+  .product p { color:var(--sub); font-size:0.88rem; margin-bottom:0.75rem; }
+  .product code { display:block; background:#0a0a0f; padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem; color:var(--green); overflow-x:auto; }
+
+  .pricing { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:2.5rem; text-align:center; }
+  .pricing h2 { margin-bottom:0.5rem; }
+  .price { font-size:3rem; font-weight:800; color:var(--green); }
+  .price-sub { color:var(--sub); margin-bottom:1.5rem; }
+  .pricing-features { text-align:left; max-width:350px; margin:1.5rem auto; }
+  .pricing-features li { padding:0.3rem 0; color:var(--sub); font-size:0.92rem; }
+  .pricing-features li::before { content:"✓ "; color:var(--green); }
+
+  footer { text-align:center; padding:3rem 0; color:var(--sub); font-size:0.85rem; border-top:1px solid var(--border); }
+  footer a { color:var(--blue); }
+
+  @media(max-width:640px) { h1 { font-size:2rem; } .stats { gap:1.5rem; } }
 </style>
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1><span>Kryptorious</span> Tools</h1>
-    <p class="subtitle">17 open-source developer tools. Scaffold, audit, secure, and ship faster — all from the command line and your CI pipeline.</p>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">17</div><div class="stat-label">Products</div></div>
-      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Platforms</div></div>
-      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Free to use</div></div>
-    </div>
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta">Upgrade to Premium</a>
-  </header>
 
-  <div class="section">
-    <h2>🐍 PyPI Packages</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-devflow/">DevFlow</a></h3>
-        <p>Scaffold, audit, fix, and ship projects. 9 templates (Python, Go, Rust, React, Node).</p>
-        <code>pip install kryptorious-devflow</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-gitsweep/">GitSweep</a></h3>
-        <p>Find stale branches, large files, and analyze commit history.</p>
-        <code>pip install kryptorious-gitsweep</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-dataforge/">DataForge</a></h3>
-        <p>Universal converter — JSON ↔ YAML ↔ CSV ↔ XML in one command.</p>
-        <code>pip install kryptorious-dataforge</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-envguard/">EnvGuard</a></h3>
-        <p>Validate, generate, and audit .env files. Catch secrets before they leak.</p>
-        <code>pip install kryptorious-envguard</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-testforge/">TestForge</a></h3>
-        <p>Auto-generate pytest tests from Python source. 12/16 passing on first run.</p>
-        <code>pip install kryptorious-testforge</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-csvclean/">CSVClean</a></h3>
-        <p>Analyze CSVs — encoding, delimiters, duplicates, type mismatches.</p>
-        <code>pip install kryptorious-csvclean</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-jsonguard/">JSONGuard</a></h3>
-        <p>Validate, format, and analyze JSON files. Catch broken JSON before it ships.</p>
-        <code>pip install kryptorious-jsonguard</code>
-      </div>
-    </div>
+<header>
+  <div class="badge"><span>23</span> tools across PyPI · GitHub Actions · npm</div>
+  <h1>Ship <em>better code</em><br>in half the time</h1>
+  <p class="hero-sub">One tool suite that replaces 15+ separate utilities. Scaffold, audit, secure, test, and ship — from CLI and CI.</p>
+  <div class="hero-cta">
+    <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-primary">Get Premium — $39</a>
+    <a href="#products" class="btn btn-ghost">See all tools</a>
   </div>
 
-  <div class="section">
-    <h2>⚡ GitHub Actions</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/python-guardian">Python Guardian</a></h3>
-        <p>All-in-one quality gate — ruff + black + mypy + bandit + pytest.</p>
-        <code>CodeGero/python-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/release-forge">Release Forge</a></h3>
-        <p>Auto-detect version bump, generate changelog, create GitHub release.</p>
-        <code>CodeGero/release-forge@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/pr-sentinel">PR Sentinel</a></h3>
-        <p>Auto-label PRs, check descriptions, enforce templates, warn on large PRs.</p>
-        <code>CodeGero/pr-sentinel@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/secret-scanner">Secret Scanner</a></h3>
-        <p>Scan PRs for hardcoded secrets before they reach production.</p>
-        <code>CodeGero/secret-scanner@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/stale-bot">Stale Bot</a></h3>
-        <p>Auto-close stale issues and PRs after configurable inactivity.</p>
-        <code>CodeGero/stale-bot@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/docker-guardian">Docker Guardian</a></h3>
-        <p>Scan Dockerfiles for security issues and best practices.</p>
-        <code>CodeGero/docker-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/spell-guardian">Spell Guardian</a></h3>
-        <p>Check spelling in code, docs, and markdown — catch typos before merge.</p>
-        <code>CodeGero/spell-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/merge-guardian">Merge Guardian</a></h3>
-        <p>Enforce merge requirements — reviews, checks, linked issues.</p>
-        <code>CodeGero/merge-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/ml-guardian">ML Guardian</a></h3>
-        <p>Catch ML code issues — missing seeds, deprecated APIs, data leakage.</p>
-        <code>CodeGero/ml-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/dependency-bot">Dependency Bot</a></h3>
-        <p>Auto-detect outdated packages across pip, npm, cargo, and go.</p>
-        <code>CodeGero/dependency-bot@v1</code>
-      </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">23</div><div class="stat-label">Products</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Platforms</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Free tier</div></div>
+    <div class="stat"><div class="stat-num">$39</div><div class="stat-label">Premium</div></div>
+  </div>
+</header>
+
+<div class="section">
+  <h2>What you <em>get</em></h2>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🏗️</div>
+      <h3>Project Scaffolding</h3>
+      <p>Generate production-ready projects in 2 seconds. 9 templates — Python, Go, Rust, React, Node.js, full-stack. CI/CD and Docker pre-configured.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🛡️</div>
+      <h3>Quality Gates</h3>
+      <p>Lint, format, type-check, security scan, and test — all in one command or one GitHub Action. Catch issues before they hit code review.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <h3>Security Scanning</h3>
+      <p>Detect hardcoded secrets, dependency vulnerabilities, and Dockerfile misconfigurations. Stop leaks before they reach production.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🚀</div>
+      <h3>Release Automation</h3>
+      <p>Auto-detect version bumps from commits, generate changelogs, create GitHub releases. One command from commit to shipped.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🤖</div>
+      <h3>AI/ML Code Audit</h3>
+      <p>Catch AI-generated code issues — hallucinated APIs, missing error handling, data leakage. Purpose-built for the LLM era.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>CI-Native</h3>
+      <p>12 GitHub Actions that work in any workflow. PR quality gates, stale management, dependency updates — plug and play.</p>
     </div>
   </div>
+</div>
 
-  <div class="section" style="text-align:center">
-    <h2>Unlock Premium</h2>
-    <p style="color:var(--muted);margin-bottom:1.5rem">Custom rules, analytics dashboards, Slack notifications, team policies, and priority support across all 17 tools.</p>
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta">Get Premium — $39</a>
+<div class="section" id="products">
+  <h2>Top <em>tools</em></h2>
+  <div class="product-showcase">
+    <div class="product">
+      <span class="tag tag-py">PyPI</span>
+      <h3>DevFlow</h3>
+      <p>Scaffold, audit, fix, and ship projects. 9 templates, CI/CD pipeline generator (premium).</p>
+      <code>pip install kryptorious-devflow</code>
+    </div>
+    <div class="product">
+      <span class="tag tag-gh">GitHub Action</span>
+      <h3>Python Guardian</h3>
+      <p>All-in-one quality gate. Ruff + Black + Mypy + Bandit + Pytest in one step.</p>
+      <code>uses: CodeGero/python-guardian@v1</code>
+    </div>
+    <div class="product">
+      <span class="tag tag-npm">npm</span>
+      <h3>PromptKit</h3>
+      <p>AI prompt template manager. Validate, version, A/B test your LLM prompts.</p>
+      <code>npx kryptorious-promptkit</code>
+    </div>
   </div>
+</div>
 
-  <footer>
-    Built by <a href="https://github.com/CodeGero">Kryptorious Quantum Biosciences</a> · 
-    <a href="https://kryptorious.gumroad.com/l/jbvet">Gumroad</a> · 
-    <a href="https://github.com/CodeGero">GitHub</a>
-  </footer>
+<div class="section">
+  <div class="pricing">
+    <h2>One license. <em>All 23 tools.</em></h2>
+    <div class="price">$39</div>
+    <div class="price-sub">one-time · lifetime updates · all platforms</div>
+    <ul class="pricing-features">
+      <li>All 7 PyPI packages — premium features</li>
+      <li>All 12 GitHub Actions — advanced configs</li>
+      <li>All 4 npm packages — full feature set</li>
+      <li>Custom rule packs and policies</li>
+      <li>Slack/Discord notifications</li>
+      <li>Team configuration sharing</li>
+    </ul>
+    <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-primary">Get Premium — $39</a>
+  </div>
+</div>
+
+<footer>
+  <p>Built by <a href="https://github.com/CodeGero">Kryptorious Quantum Biosciences</a></p>
+  <p style="margin-top:0.5rem">
+    <a href="https://github.com/CodeGero">GitHub</a> ·
+    <a href="https://pypi.org/user/kryptorious/">PyPI</a> ·
+    <a href="https://www.npmjs.com/~kryptorious">npm</a> ·
+    <a href="https://kryptorious.gumroad.com/l/jbvet">Gumroad</a>
+  </p>
+</footer>
+
 </div>
 </body>
 </html>
