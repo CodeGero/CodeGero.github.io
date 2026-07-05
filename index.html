@@ -4,21 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kryptorious Tools — Developer Workflow Automation</title>
-<meta name="description" content="17 open-source developer tools for Python, GitHub Actions, and more. Scaffold, audit, secure, and ship faster.">
+<meta name="description" content="23 open-source developer tools for Python, GitHub Actions, npm, and more. Scaffold, audit, secure, and ship faster from the command line.">
+<meta property="og:title" content="Kryptorious Tools — Developer Workflow Automation">
+<meta property="og:description" content="23 open-source developer tools. Scaffold, audit, secure, and ship faster — all from the command line and your CI pipeline.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://codegero.github.io">
+<meta property="og:image" content="https://codegero.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kryptorious Tools — Developer Workflow Automation">
+<meta name="twitter:description" content="23 open-source developer tools. Scaffold, audit, secure, and ship faster.">
+<link rel="canonical" href="https://codegero.github.io">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Kryptorious Quantum Biosciences",
+  "url": "https://codegero.github.io",
+  "description": "Building open-source developer tools for Python, GitHub Actions, and npm. Scaffold, audit, secure, and ship faster.",
+  "founder": {
+    "@type": "Person",
+    "name": "Kryptorius Kryptoria"
+  }
+}
+</script>
 <style>
   :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --purple: #bc8cff; --orange: #d2991d; --red: #f85149; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
-  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
   header { text-align: center; padding: 4rem 0 2rem; }
   h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
   h1 span { color: var(--accent); }
-  .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto 1.5rem; }
+  .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 650px; margin: 0 auto 1.5rem; }
+  .hero-code { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; max-width: 520px; margin: 0 auto 1.5rem; text-align: left; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; overflow-x: auto; }
+  .hero-code .prompt { color: var(--green); }
+  .hero-code .cmd { color: var(--accent); }
+  .hero-code .comment { color: var(--muted); }
+  .btn-group { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.5rem; }
   .cta { display: inline-block; background: var(--green); color: #000; padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 1.05rem; }
   .cta:hover { opacity: 0.9; }
+  .cta-gh { display: inline-block; background: var(--card); color: var(--text); padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 1.05rem; border: 1px solid var(--border); }
+  .cta-gh:hover { background: #1c2128; }
   .section { margin: 3rem 0; }
   h2 { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
   .card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
   .card h3 a { color: var(--accent); text-decoration: none; }
@@ -28,27 +59,63 @@
   .tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.72rem; font-weight: 600; margin-right: 0.3rem; }
   .tag-pypi { background: #1a3a5c; color: var(--accent); }
   .tag-action { background: #2d1a4e; color: var(--purple); }
+  .tag-npm { background: #3d1a1a; color: var(--red); }
   .stats { display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0; }
   .stat { text-align: center; }
   .stat-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
   .stat-label { color: var(--muted); font-size: 0.85rem; }
+  .trust-bar { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 2rem 0; }
+  .trust-item { text-align: center; }
+  .trust-item .num { font-size: 1.5rem; font-weight: 700; color: var(--green); }
+  .trust-item .label { font-size: 0.8rem; color: var(--muted); }
+  .faq { max-width: 700px; margin: 0 auto; }
+  .faq-item { margin-bottom: 1.25rem; }
+  .faq-q { font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+  .faq-a { color: var(--muted); font-size: 0.92rem; }
+  .premium { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 3rem 2rem; text-align: center; }
+  .premium h2 { border: none; font-size: 1.75rem; }
+  .price { font-size: 3rem; font-weight: 800; color: var(--green); margin: 0.5rem 0; }
+  .price small { font-size: 1rem; font-weight: 400; color: var(--muted); }
   footer { text-align: center; padding: 3rem 0; color: var(--muted); font-size: 0.85rem; }
   footer a { color: var(--accent); }
-  @media (max-width: 600px) { h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } .hero-code { font-size: 0.72rem; padding: 0.75rem; } }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
     <h1><span>Kryptorious</span> Tools</h1>
-    <p class="subtitle">17 open-source developer tools. Scaffold, audit, secure, and ship faster — all from the command line and your CI pipeline.</p>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">17</div><div class="stat-label">Products</div></div>
-      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Platforms</div></div>
-      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Free to use</div></div>
+    <p class="subtitle">23 open-source developer tools. Scaffold, audit, secure, and ship faster — all from the command line and your CI pipeline.</p>
+    <div class="hero-code">
+      <span class="prompt">$</span> <span class="cmd">pip install kryptorious-devflow</span><br>
+      <span class="prompt">$</span> <span class="cmd">devflow init my-project --template cli</span><br>
+      <span class="prompt">$</span> <span class="cmd">devflow audit</span><br>
+      <span class="comment"># 72/100 — 8 passed, 3 warnings</span>
     </div>
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta">Upgrade to Premium</a>
+    <div class="btn-group">
+      <a href="https://github.com/CodeGero" class="cta-gh">View on GitHub →</a>
+      <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta">Get Premium — $9</a>
+    </div>
   </header>
+
+  <div class="trust-bar">
+    <div class="trust-item">
+      <div class="num">23</div>
+      <div class="label">Developer Tools</div>
+    </div>
+    <div class="trust-item">
+      <div class="num">3</div>
+      <div class="label">Platforms</div>
+    </div>
+    <div class="trust-item">
+      <div class="num">MIT</div>
+      <div class="label">License</div>
+    </div>
+    <div class="trust-item">
+      <div class="num">∞</div>
+      <div class="label">Free to Use</div>
+    </div>
+  </div>
 
   <div class="section">
     <h2>🐍 PyPI Packages</h2>
@@ -80,7 +147,7 @@
       <div class="card">
         <span class="tag tag-pypi">PyPI</span>
         <h3><a href="https://pypi.org/project/kryptorious-testforge/">TestForge</a></h3>
-        <p>Auto-generate pytest tests from Python source. 12/16 passing on first run.</p>
+        <p>Auto-generate pytest tests from Python source.</p>
         <code>pip install kryptorious-testforge</code>
       </div>
       <div class="card">
@@ -92,7 +159,7 @@
       <div class="card">
         <span class="tag tag-pypi">PyPI</span>
         <h3><a href="https://pypi.org/project/kryptorious-jsonguard/">JSONGuard</a></h3>
-        <p>Validate, format, and analyze JSON files. Catch broken JSON before it ships.</p>
+        <p>Validate, format, and analyze JSON files.</p>
         <code>pip install kryptorious-jsonguard</code>
       </div>
     </div>
@@ -140,7 +207,7 @@
       <div class="card">
         <span class="tag tag-action">Action</span>
         <h3><a href="https://github.com/CodeGero/spell-guardian">Spell Guardian</a></h3>
-        <p>Check spelling in code, docs, and markdown — catch typos before merge.</p>
+        <p>Check spelling in code, docs, and markdown.</p>
         <code>CodeGero/spell-guardian@v1</code>
       </div>
       <div class="card">
@@ -164,10 +231,58 @@
     </div>
   </div>
 
-  <div class="section" style="text-align:center">
-    <h2>Unlock Premium</h2>
-    <p style="color:var(--muted);margin-bottom:1.5rem">Custom rules, analytics dashboards, Slack notifications, team policies, and priority support across all 17 tools.</p>
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta">Get Premium — $9</a>
+  <div class="section">
+    <h2>📦 npm Packages</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="tag tag-npm">npm</span>
+        <h3><a href="https://www.npmjs.com/package/kryptorious-devkit">DevKit</a></h3>
+        <p>Scaffold Node.js projects — React, Express, CLI, or vanilla.</p>
+        <code>npm install -g kryptorious-devkit</code>
+      </div>
+      <div class="card">
+        <span class="tag tag-npm">npm</span>
+        <h3><a href="https://www.npmjs.com/package/kryptorious-envguard">EnvGuard</a></h3>
+        <p>Validate .env files — catch missing values and secrets.</p>
+        <code>npm install -g kryptorious-envguard</code>
+      </div>
+      <div class="card">
+        <span class="tag tag-npm">npm</span>
+        <h3><a href="https://www.npmjs.com/package/quicklint-cli">QuickLint</a></h3>
+        <p>Zero-config ESLint + Prettier setup in one command.</p>
+        <code>npm install -g quicklint-cli</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>❓ FAQ</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-q">Are these tools really free?</div>
+        <div class="faq-a">Yes — every tool is MIT-licensed and free for personal and commercial use. Premium unlocks advanced features like custom rules, analytics dashboards, and Slack notifications.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the difference between free and premium?</div>
+        <div class="faq-a">Free gives you the core tool. Premium ($9 lifetime) adds custom rule packs, historical dashboards, team config sharing, Slack/Discord notifications, and priority support across all tools.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How do I install these tools?</div>
+        <div class="faq-a">Each tool lists its install command. Python tools use <code>pip install</code>, npm tools use <code>npm install -g</code>, and GitHub Actions reference <code>CodeGero/name@v1</code> in your workflow YAML.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do you offer team licenses?</div>
+        <div class="faq-a">Premium is a lifetime license per user. For teams of 5+, contact us via GitHub for bulk pricing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="premium">
+    <h2>Unlock Everything</h2>
+    <p style="color:var(--muted);margin-bottom:0.5rem">One payment. Lifetime access. All 23 tools.</p>
+    <div class="price">$9 <small>lifetime</small></div>
+    <p style="color:var(--muted);margin-bottom:1.5rem">Custom rules · Analytics dashboards · Slack/Discord notifications · Team policies · Priority support</p>
+    <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta" style="font-size:1.15rem;padding:0.85rem 2.5rem">Get Premium — $9</a>
   </div>
 
   <footer>
