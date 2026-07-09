@@ -3,341 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kryptorious Tools — Developer Workflow Automation</title>
-<meta name="description" content="31 open-source developer tools for Python, GitHub Actions, npm, and more. Scaffold, audit, secure, and ship faster from the command line.">
-<meta property="og:title" content="Kryptorious Tools — Developer Workflow Automation">
-<meta property="og:description" content="31 open-source developer tools. Scaffold, audit, secure, and ship faster — all from the command line and your CI pipeline.">
+<title>Kryptorious — Developer Tool Suite | 33 Tools · $9 Lifetime</title>
+<meta name="description" content="33 open-source developer tools across PyPI, GitHub Actions, and npm. Scaffold, audit, secure, test, and ship faster. Premium suite — $9 lifetime, free tier forever.">
+<meta name="keywords" content="developer tools, python, github actions, npm, scaffolding, code quality, security, CI/CD">
+<link rel="canonical" href="https://codegero.github.io/">
+<meta property="og:title" content="Kryptorious — Developer Tool Suite">
+<meta property="og:description" content="33 developer tools. One $9 license. Ship better code.">
+<meta property="og:url" content="https://codegero.github.io/">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://codegero.github.io">
-<meta property="og:image" content="https://codegero.github.io/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kryptorious Tools — Developer Workflow Automation">
-<meta name="twitter:description" content="31 open-source developer tools. Scaffold, audit, secure, and ship faster.">
-<link rel="canonical" href="https://codegero.github.io">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Kryptorious Quantum Biosciences",
-  "url": "https://codegero.github.io",
-  "description": "Building open-source developer tools for Python, GitHub Actions, and npm. Scaffold, audit, secure, and ship faster.",
-  "founder": {
-    "@type": "Person",
-    "name": "Kryptorius Kryptoria"
-  }
-}
-</script>
+<meta name="twitter:title" content="Kryptorious — Developer Tool Suite">
+<meta name="twitter:description" content="33 developer tools. One $9 license. Ship better code.">
+<script type="application/ld+json">{"@context":"https://***@type":"SoftwareApplication","name":"Kryptorious Developer Tool Suite","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD"},"description":"33 open-source developer tools. Scaffold, audit, secure, test, and ship faster.","author":{"@type":"Organization","name":"Kryptorious Quantum Biosciences, Inc."}}</script>
+<script src="https://gumroad.com/js/gumroad.js" async></script>
 <style>
-  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --purple: #bc8cff; --orange: #d2991d; --red: #f85149; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
-  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
-  header { text-align: center; padding: 4rem 0 2rem; }
-  h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-  h1 span { color: var(--accent); }
-  .subtitle { color: var(--muted); font-size: 1.15rem; max-width: 650px; margin: 0 auto 1.5rem; }
-  .hero-code { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; max-width: 520px; margin: 0 auto 1.5rem; text-align: left; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; overflow-x: auto; }
-  .hero-code .prompt { color: var(--green); }
-  .hero-code .cmd { color: var(--accent); }
-  .hero-code .comment { color: var(--muted); }
-  .btn-group { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.5rem; }
-  .cta { display: inline-block; background: var(--green); color: #000; padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 1.05rem; }
-  .cta:hover { opacity: 0.9; }
-  .cta-gh { display: inline-block; background: var(--card); color: var(--text); padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 1.05rem; border: 1px solid var(--border); }
-  .cta-gh:hover { background: #1c2128; }
-  .section { margin: 3rem 0; }
-  h2 { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
-  .card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
-  .card h3 a { color: var(--accent); text-decoration: none; }
-  .card h3 a:hover { text-decoration: underline; }
-  .card p { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.5rem; }
-  .card code { background: #1c2128; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.8rem; color: var(--green); }
-  .tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.72rem; font-weight: 600; margin-right: 0.3rem; }
-  .tag-pypi { background: #1a3a5c; color: var(--accent); }
-  .tag-action { background: #2d1a4e; color: var(--purple); }
-  .tag-npm { background: #3d1a1a; color: var(--red); }
-  .stats { display: flex; gap: 2rem; justify-content: center; margin: 1.5rem 0; }
-  .stat { text-align: center; }
-  .stat-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
-  .stat-label { color: var(--muted); font-size: 0.85rem; }
-  .trust-bar { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 2rem 0; }
-  .trust-item { text-align: center; }
-  .trust-item .num { font-size: 1.5rem; font-weight: 700; color: var(--green); }
-  .trust-item .label { font-size: 0.8rem; color: var(--muted); }
-  .faq { max-width: 700px; margin: 0 auto; }
-  .faq-item { margin-bottom: 1.25rem; }
-  .faq-q { font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
-  .faq-a { color: var(--muted); font-size: 0.92rem; }
-  .premium { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 3rem 2rem; text-align: center; }
-  .premium h2 { border: none; font-size: 1.75rem; }
-  .price { font-size: 3rem; font-weight: 800; color: var(--green); margin: 0.5rem 0; }
-  .price small { font-size: 1rem; font-weight: 400; color: var(--muted); }
-  footer { text-align: center; padding: 3rem 0; color: var(--muted); font-size: 0.85rem; }
-  footer a { color: var(--accent); }
-  @media (max-width: 600px) { h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } .hero-code { font-size: 0.72rem; padding: 0.75rem; } }
+:root{
+  --bg:#08080d;--bg2:#0c0c14;--surface:#111118;--border:#1c1c2a;--border-hover:#282840;
+  --text:#cdd6f4;--sub:#6c7086;--blue:#89b4fa;--green:#a6e3a1;--purple:#cba6f7;
+  --red:#f38ba8;--yellow:#f9e2af;--orange:#fab387;--teal:#94e2d5;--pink:#f5c2e7;
+  --gradient:linear-gradient(135deg,var(--blue),var(--purple));
+  --radius:10px;--radius-sm:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 20% 50%,rgba(137,180,250,0.03) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(203,166,247,0.03) 0%,transparent 50%);pointer-events:none;z-index:0}
+.container{max-width:1080px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,13,0.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;justify-content:space-between;align-items:center;padding-top:0.8rem;padding-bottom:0.8rem}
+.logo{font-weight:800;font-size:1.1rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;letter-spacing:-0.01em}
+.nav-links{display:flex;gap:1.25rem;align-items:center}
+.nav-links a{color:var(--sub);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--green);color:#08080d!important;padding:0.4rem 1rem;border-radius:var(--radius-sm);font-weight:700!important;font-size:0.8rem!important}
+
+header{text-align:center;padding:5rem 0 3rem}
+.badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:0.3rem 1rem;font-size:0.82rem;color:var(--sub);margin-bottom:1.5rem}
+.badge .dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(166,227,161,0.4)}50%{opacity:0.6;box-shadow:0 0 0 6px rgba(166,227,161,0)}}
+h1{font-size:3.25rem;font-weight:800;line-height:1.12;margin-bottom:1rem;letter-spacing:-0.02em}
+h1 em{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.hero-sub{font-size:1.15rem;color:var(--sub);max-width:560px;margin:0 auto 2rem}
+.hero-cta{display:inline-flex;gap:0.75rem;align-items:center;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.8rem 1.75rem;border-radius:var(--radius-sm);font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer;transition:all 0.2s;border:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.btn-primary{background:var(--green);color:#08080d}
+.btn-gumroad{background:linear-gradient(135deg,#ff90e8,#ff6b6b);color:#fff}
+.btn-ghost{background:transparent;border:2px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+
+.stats-bar{display:flex;justify-content:center;margin:2.5rem 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-width:700px;margin-left:auto;margin-right:auto}
+.stat-item{flex:1;text-align:center;padding:1.25rem 0.5rem;border-right:1px solid var(--border);transition:background 0.2s}
+.stat-item:hover{background:rgba(137,180,250,0.03)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-size:1.75rem;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums}
+.stat-num.green{color:var(--green)}
+.stat-label{color:var(--sub);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.6px;margin-top:0.15rem}
+
+.section{margin:5rem 0}
+.section.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.16,1,0.3,1)}
+.section.reveal.visible{opacity:1;transform:translateY(0)}
+h2{font-size:1.85rem;font-weight:700;margin-bottom:0.35rem;letter-spacing:-0.01em}
+h2 em{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.section-sub{color:var(--sub);margin-bottom:2rem;font-size:1.05rem}
+
+.demo-wrap{max-width:780px;margin:0 auto}
+.demo-terminal{background:#0a0a12;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+.demo-header{background:var(--surface);padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--border)}
+.demo-dot{width:10px;height:10px;border-radius:50%}.demo-dot.r{background:var(--red)}.demo-dot.y{background:var(--yellow)}.demo-dot.g{background:var(--green)}
+.demo-header span{color:var(--sub);font-size:0.76rem;margin-left:0.5rem;font-family:'SF Mono','Fira Code',monospace}
+.demo-body{padding:1.25rem 1.5rem;font-family:'SF Mono','Fira Code','Cascadia Code','JetBrains Mono',monospace;font-size:0.8rem;line-height:1.8;min-height:280px;position:relative}
+.demo-body .line{display:block;white-space:pre-wrap}
+.demo-body .prompt{color:var(--green)}.demo-body .cmd{color:var(--blue)}.demo-body .out{color:var(--sub)}.demo-body .success{color:var(--green)}.demo-body .warn{color:var(--yellow)}.demo-body .err{color:var(--red)}.demo-body .highlight{color:var(--pink)}
+.demo-body .cursor{display:inline-block;width:8px;height:15px;background:var(--text);animation:blink 1s step-end infinite;vertical-align:text-bottom;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.platform-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{padding:0.45rem 1rem;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:600;cursor:pointer;background:var(--surface);border:1px solid var(--border);color:var(--sub);transition:all 0.2s}
+.tab:hover{border-color:var(--border-hover);color:var(--text)}
+.tab.active{background:var(--blue);color:#08080d;border-color:var(--blue);box-shadow:0 2px 12px rgba(137,180,250,0.2)}
+.tab .count{font-size:0.72rem;opacity:0.7;margin-left:0.25rem}
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:0.85rem}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem;transition:all 0.25s;position:relative;overflow:hidden}
+.product-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--gradient);opacity:0;transition:opacity 0.25s}
+.product-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.25)}
+.product-card:hover::before{opacity:1}
+.product-card .tag{display:inline-block;padding:0.12rem 0.5rem;border-radius:3px;font-size:0.66rem;font-weight:700;margin-bottom:0.7rem;text-transform:uppercase;letter-spacing:0.5px}
+.tag-py{background:rgba(137,180,250,0.12);color:var(--blue)}
+.tag-gh{background:rgba(203,166,247,0.12);color:var(--purple)}
+.tag-npm{background:rgba(249,226,175,0.12);color:var(--yellow)}
+.product-card h3{font-size:0.98rem;margin-bottom:0.2rem}
+.product-card h3 a{color:var(--text);text-decoration:none}
+.product-card h3 a:hover{color:var(--blue)}
+.product-card .desc{color:var(--sub);font-size:0.82rem;margin-bottom:0.7rem;min-height:2.2rem}
+.product-card .install-wrap{display:flex;align-items:center;background:var(--bg);border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.product-card .install-wrap code{flex:1;padding:0.45rem 0.7rem;font-size:0.75rem;color:var(--green);overflow-x:auto;white-space:nowrap;background:transparent}
+.product-card .copy-btn{background:var(--surface);border:none;border-left:1px solid var(--border);color:var(--sub);padding:0.45rem 0.6rem;cursor:pointer;font-size:0.75rem;transition:all 0.15s;white-space:nowrap}
+.product-card .copy-btn:hover{background:var(--blue);color:#08080d}
+.product-card .copy-btn.copied{background:var(--green);color:#08080d}
+.product-card .links{display:flex;gap:1rem;margin-top:0.6rem;font-size:0.78rem}
+.product-card .links a{color:var(--sub);text-decoration:none}
+.product-card .links a:hover{color:var(--blue)}
+
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:all 0.25s}
+.feature-card:hover{border-color:var(--border-hover);transform:translateY(-1px)}
+.feature-icon{font-size:1.5rem;margin-bottom:0.75rem;display:inline-block;transition:transform 0.3s}
+.feature-card:hover .feature-icon{transform:scale(1.1)}
+.feature-card h3{font-size:1rem;margin-bottom:0.3rem}
+.feature-card p{color:var(--sub);font-size:0.86rem}
+
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;max-width:750px;margin:0 auto}
+.pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;text-align:center;transition:all 0.25s}
+.pricing-card:hover{transform:translateY(-2px)}
+.pricing-card.featured{border-color:var(--green);box-shadow:0 0 40px rgba(166,227,161,0.06);position:relative}
+.pricing-card .popular{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#08080d;padding:0.2rem 1rem;border-radius:12px;font-size:0.75rem;font-weight:700}
+.pricing-card h3{font-size:1.2rem;margin-bottom:0.5rem}
+.price{font-size:3rem;font-weight:800}
+.price-free{color:var(--blue)}.price-premium{color:var(--green)}
+.price-sub{color:var(--sub);margin-bottom:1.5rem;font-size:0.86rem}
+.pricing-card ul{text-align:left;list-style:none;margin-bottom:1.5rem}
+.pricing-card li{padding:0.35rem 0;color:var(--sub);font-size:0.84rem}
+.pricing-card li::before{content:"✓ ";color:var(--green);font-weight:700}
+
+.comparison{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+.comparison table{width:100%;border-collapse:collapse;font-size:0.86rem}
+.comparison th{text-align:left;padding:0.7rem 1rem;border-bottom:2px solid var(--border);color:var(--sub);font-weight:600;background:var(--surface)}
+.comparison td{padding:0.55rem 1rem;border-bottom:1px solid var(--border);transition:background 0.15s}
+.comparison tr:hover td{background:rgba(137,180,250,0.03)}
+.comparison .check{color:var(--green)}.comparison .cross{color:var(--red)}.comparison .star{color:var(--yellow)}
+.comparison tr:first-child td:first-child{font-weight:700}
+
+.faq{max-width:700px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:1.25rem 0;cursor:pointer}
+.faq-item h4{font-size:1rem;display:flex;justify-content:space-between;align-items:center;transition:color 0.2s}
+.faq-item:hover h4{color:var(--blue)}
+.faq-item h4::after{content:'+';font-size:1.2rem;color:var(--sub);transition:transform 0.3s}
+.faq-item.open h4::after{content:'−';transform:rotate(180deg)}
+.faq-item .answer{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.35s ease}
+.faq-item.open .answer{max-height:200px;padding-top:0.5rem}
+.faq-item .answer p{color:var(--sub);font-size:0.88rem}
+
+footer{text-align:center;padding:3rem 0;color:var(--sub);font-size:0.8rem;border-top:1px solid var(--border);margin-top:3rem}
+footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--green);color:#08080d;padding:0.6rem 1.25rem;border-radius:var(--radius-sm);font-weight:600;font-size:0.85rem;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none}
+.toast.show{opacity:1}
+
+@media(max-width:700px){
+  h1{font-size:2rem}.stats-bar{flex-wrap:wrap;border-radius:var(--radius)}
+  .stat-item{flex:1 1 50%;border-bottom:1px solid var(--border);padding:1rem 0.5rem}
+  .stat-item:nth-child(3),.stat-item:nth-child(4){border-bottom:none}
+  .product-grid{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr}
+  .nav-links{gap:0.6rem}.nav-cta{display:none}.demo-body{font-size:0.7rem}
+}
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="container">
+    <a href="#" class="logo">Kryptorious</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#products">Products</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://kryptorious.gumroad.com/l/jbvet" class="nav-cta">Get Premium $9</a>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
-  <header>
-    <h1><span>Kryptorious</span> Tools</h1>
-    <p class="subtitle">31 open-source developer tools. Scaffold, audit, secure, and ship faster — all from the command line and your CI pipeline.</p>
-    <div class="hero-code">
-      <span class="prompt">$</span> <span class="cmd">pip install kryptorious-devflow</span><br>
-      <span class="prompt">$</span> <span class="cmd">devflow init my-project --template cli</span><br>
-      <span class="prompt">$</span> <span class="cmd">devflow audit</span><br>
-      <span class="comment"># 72/100 — 8 passed, 3 warnings</span>
-    </div>
-    <div class="btn-group">
-      <a href="https://github.com/CodeGero" class="cta-gh">View on GitHub →</a>
-      <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta">Get Premium — $9</a>
-    </div>
-  </header>
 
-  <div class="trust-bar">
-    <div class="trust-item">
-      <div class="num">31</div>
-      <div class="label">Developer Tools</div>
-    </div>
-    <div class="trust-item">
-      <div class="num">3</div>
-      <div class="label">Platforms</div>
-    </div>
-    <div class="trust-item">
-      <div class="num">MIT</div>
-      <div class="label">License</div>
-    </div>
-    <div class="trust-item">
-      <div class="num">∞</div>
-      <div class="label">Free to Use</div>
-    </div>
+<header>
+  <div class="badge"><span class="dot"></span>33 tools · actively maintained</div>
+  <h1>Ship <em>better code</em><br>in half the time</h1>
+  <p class="hero-sub">One developer tool suite replacing 15+ separate utilities. Free tier forever. Premium when you're ready.</p>
+  <div class="hero-cta">
+    <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-gumroad">Get Premium — $9 Lifetime</a>
+    <a href="#demo" class="btn btn-ghost">Watch it run ↓</a>
   </div>
+</header>
 
-  <div class="section">
-    <h2>🐍 PyPI Packages</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-devflow/">DevFlow</a></h3>
-        <p>Scaffold, audit, fix, and ship projects. 9 templates (Python, Go, Rust, React, Node).</p>
-        <code>pip install kryptorious-devflow</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-gitsweep/">GitSweep</a></h3>
-        <p>Find stale branches, large files, and analyze commit history.</p>
-        <code>pip install kryptorious-gitsweep</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-dataforge/">DataForge</a></h3>
-        <p>Universal converter — JSON ↔ YAML ↔ CSV ↔ XML in one command.</p>
-        <code>pip install kryptorious-dataforge</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-envguard/">EnvGuard</a></h3>
-        <p>Validate, generate, and audit .env files. Catch secrets before they leak.</p>
-        <code>pip install kryptorious-envguard</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-testforge/">TestForge</a></h3>
-        <p>Auto-generate pytest tests from Python source.</p>
-        <code>pip install kryptorious-testforge</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-csvclean/">CSVClean</a></h3>
-        <p>Analyze CSVs — encoding, delimiters, duplicates, type mismatches.</p>
-        <code>pip install kryptorious-csvclean</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-jsonguard/">JSONGuard</a></h3>
-        <p>Validate, format, and analyze JSON files.</p>
-        <code>pip install kryptorious-jsonguard</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://pypi.org/project/kryptorious-apiguard/">ApiGuard</a></h3>
-        <p>Detect breaking changes in OpenAPI specs — 30+ rules, CI-ready.</p>
-        <code>pip install kryptorious-apiguard</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-pypi">PyPI</span>
-        <h3><a href="https://github.com/CodeGero/draftguard">DraftGuard</a></h3>
-        <p>Detect environment config drift before it causes production incidents.</p>
-        <code>pip install kryptorious-draftguard</code>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>⚡ GitHub Actions</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/python-guardian">Python Guardian</a></h3>
-        <p>All-in-one quality gate — ruff + black + mypy + bandit + pytest.</p>
-        <code>CodeGero/python-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/release-forge">Release Forge</a></h3>
-        <p>Auto-detect version bump, generate changelog, create GitHub release.</p>
-        <code>CodeGero/release-forge@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/pr-sentinel">PR Sentinel</a></h3>
-        <p>Auto-label PRs, check descriptions, enforce templates, warn on large PRs.</p>
-        <code>CodeGero/pr-sentinel@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/secret-scanner">Secret Scanner</a></h3>
-        <p>Scan PRs for hardcoded secrets before they reach production.</p>
-        <code>CodeGero/secret-scanner@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/stale-bot">Stale Bot</a></h3>
-        <p>Auto-close stale issues and PRs after configurable inactivity.</p>
-        <code>CodeGero/stale-bot@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/docker-guardian">Docker Guardian</a></h3>
-        <p>Scan Dockerfiles for security issues and best practices.</p>
-        <code>CodeGero/docker-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/spell-guardian">Spell Guardian</a></h3>
-        <p>Check spelling in code, docs, and markdown.</p>
-        <code>CodeGero/spell-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/merge-guardian">Merge Guardian</a></h3>
-        <p>Enforce merge requirements — reviews, checks, linked issues.</p>
-        <code>CodeGero/merge-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/ml-guardian">ML Guardian</a></h3>
-        <p>Catch ML code issues — missing seeds, deprecated APIs, data leakage.</p>
-        <code>CodeGero/ml-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/dependency-bot">Dependency Bot</a></h3>
-        <p>Auto-detect outdated packages across pip, npm, cargo, and go.</p>
-        <code>CodeGero/dependency-bot@v1</code>
-      </div>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/go-guardian">Go Guardian</a></h3>
-        <p>All-in-one Go quality gate — gofmt, go vet, golangci-lint, go test.</p>
-        <code>CodeGero/go-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/rust-guardian">Rust Guardian</a></h3>
-        <p>All-in-one Rust quality gate — fmt, clippy, check, test, audit.</p>
-        <code>CodeGero/rust-guardian@v1</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-action">Action</span>
-        <h3><a href="https://github.com/CodeGero/license-guardian">License Guardian</a></h3>
-        <p>Check dependencies for license compliance across pip, npm, cargo, go.</p>
-        <code>CodeGero/license-guardian@v1</code>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>📦 npm Packages</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="tag tag-npm">npm</span>
-        <h3><a href="https://www.npmjs.com/package/kryptorious-devkit">DevKit</a></h3>
-        <p>Scaffold Node.js projects — React, Express, CLI, or vanilla.</p>
-        <code>npm install -g kryptorious-devkit</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-npm">npm</span>
-        <h3><a href="https://www.npmjs.com/package/kryptorious-envguard">EnvGuard</a></h3>
-        <p>Validate .env files — catch missing values and secrets.</p>
-        <code>npm install -g kryptorious-envguard</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-npm">npm</span>
-        <h3><a href="https://www.npmjs.com/package/quicklint-cli">QuickLint</a></h3>
-        <p>Zero-config ESLint + Prettier setup in one command.</p>
-        <code>npm install -g quicklint-cli</code>
-      </div>
-      </div>
-      <div class="card">
-        <span class="tag tag-npm">npm</span>
-        <h3><a href="https://www.npmjs.com/package/kryptorious-logguard">LogGuard</a></h3>
-        <p>Scan, analyze, and tail log files — find errors fast.</p>
-        <code>npm install -g kryptorious-logguard</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-npm">npm</span>
-        <h3><a href="https://www.npmjs.com/package/kryptorious-configsync">ConfigSync</a></h3>
-        <p>Compare and sync config files across projects.</p>
-        <code>npm install -g kryptorious-configsync</code>
-      </div>
-      <div class="card">
-        <span class="tag tag-npm">npm</span>
-        <h3><a href="https://www.npmjs.com/package/kryptorious-portcheck">PortCheck</a></h3>
-        <p>Find free ports and detect conflicts before starting dev servers.</p>
-        <code>npm install -g kryptorious-portcheck</code>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>❓ FAQ</h2>
-    <div class="faq">
-      <div class="faq-item">
-        <div class="faq-q">Are these tools really free?</div>
-        <div class="faq-a">Yes — every tool is MIT-licensed and free for personal and commercial use. Premium unlocks advanced features like custom rules, analytics dashboards, and Slack notifications.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What's the difference between free and premium?</div>
-        <div class="faq-a">Free gives you the core tool. Premium ($9 lifetime) adds custom rule packs, historical dashboards, team config sharing, Slack/Discord notifications, and priority support across all tools.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How do I install these tools?</div>
-        <div class="faq-a">Each tool lists its install command. Python tools use <code>pip install</code>, npm tools use <code>npm install -g</code>, and GitHub Actions reference <code>CodeGero/name@v1</code> in your workflow YAML.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Do you offer team licenses?</div>
-        <div class="faq-a">Premium is a lifetime license per user. For teams of 5+, contact us via GitHub for bulk pricing.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="premium">
-    <h2>Unlock Everything</h2>
-    <p style="color:var(--muted);margin-bottom:0.5rem">One payment. Lifetime access. All 31 tools.</p>
-    <div class="price">$9 <small>lifetime</small></div>
-    <p style="color:var(--muted);margin-bottom:1.5rem">Custom rules · Analytics dashboards · Slack/Discord notifications · Team policies · Priority support</p>
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="cta" style="font-size:1.15rem;padding:0.85rem 2.5rem">Get Premium — $9</a>
-  </div>
-
-  <footer>
-    Built by <a href="https://github.com/CodeGero">Kryptorious Quantum Biosciences</a> · 
-    <a href="https://kryptorious.gumroad.com/l/jbvet">Gumroad</a> · 
-    <a href="/blog/">Blog</a> · <a href="https://github.com/CodeGero">GitHub</a>
-  </footer>
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num" data-target="33">0</div><div class="stat-label">Products</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="3">0</div><div class="stat-label">Platforms</div></div>
+  <div class="stat-item"><div class="stat-num green" data-target="13">0</div><div class="stat-label">GitHub Actions</div></div>
+  <div class="stat-item"><div class="stat-num green">$9</div><div class="stat-label">Lifetime</div></div>
 </div>
+
+<div class="section reveal" id="demo">
+  <h2>Watch it <em>work</em></h2>
+  <p class="section-sub">From nothing to shipped in four commands.</p>
+  <div class="demo-wrap">
+    <div class="demo-terminal">
+      <div class="demo-header"><div class="demo-dot r"></div><div class="demo-dot y"></div><div class="demo-dot g"></div><span>terminal — devflow</span></div>
+      <div class="demo-body" id="terminal"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section reveal" id="features">
+  <h2>What you <em>get</em></h2>
+  <p class="section-sub">Every tool you need to write, review, secure, and ship — in one suite.</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🏗️</div><h3>Smart Scaffolding</h3><p>Production-ready projects in 2 seconds. 9 templates with CI/CD and Docker pre-configured.</p></div>
+    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Quality Gates</h3><p>Lint, format, type-check, scan, and test — one command. Catch issues before code review.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Secret Detection</h3><p>Scan PRs for API keys, tokens, credentials. Stop leaks before they reach production.</p></div>
+    <div class="feature-card"><div class="feature-icon">🚀</div><h3>Release Automation</h3><p>Auto-detect bumps from commits. Generate changelogs. Create releases. Push. Done.</p></div>
+    <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI Code Audit</h3><p>Catch hallucinated APIs, missing error handling, ML bugs in AI-generated code.</p></div>
+    <div class="feature-card"><div class="feature-icon">⚡</div><h3>CI-Native</h3><p>12 GitHub Actions. One line in your workflow. Zero config, instant results.</p></div>
+  </div>
+</div>
+
+<div class="section reveal" id="products">
+  <h2>All <em>33 Products</em></h2>
+  <p class="section-sub">Filter by platform. Free tier on every tool. Premium unlocks the full suite.</p>
+  <div class="platform-tabs">
+    <button class="tab active" onclick="filterProducts('all',this)">All<span class="count">33</span></button>
+    <button class="tab" onclick="filterProducts('pypi',this)">PyPI<span class="count">9</span></button>
+    <button class="tab" onclick="filterProducts('github',this)">GitHub Actions<span class="count">12</span></button>
+    <button class="tab" onclick="filterProducts('npm',this)">npm<span class="count">6</span></button>
+  </div>
+  <div class="product-grid" id="product-grid"></div>
+</div>
+
+<div class="section reveal" id="pricing">
+  <h2>Simple <em>Pricing</em></h2>
+  <p class="section-sub">Free forever. One payment when you're ready for more.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3>Free</h3><div class="price price-free">$0</div><div class="price-sub">forever · no catch</div>
+      <ul><li>All 33 tools — core features</li><li>Unlimited personal use</li><li>Unlimited commercial use</li><li>MIT licensed</li><li>Community support</li></ul>
+      <a href="#products" class="btn btn-ghost" style="width:100%;justify-content:center">Browse tools</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="popular">One-time payment</div>
+      <h3>Premium Suite</h3><div class="price price-premium">$9</div><div class="price-sub">lifetime · all updates</div>
+      <ul><li>Everything in Free</li><li>Multi-environment configs</li><li>Approval gates</li><li>Infrastructure-as-Code templates</li><li>Prompt A/B testing</li><li>Advanced rule packs</li><li>Analytics dashboards</li><li>Priority support</li></ul>
+      <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-gumroad" style="width:100%;justify-content:center">Get Premium — $9</a>
+    </div>
+  </div>
+</div>
+
+<div class="section reveal">
+  <h2>How we <em>compare</em></h2>
+  <p class="section-sub">DevFlow replaces multiple tools with one command.</p>
+  <div class="comparison">
+    <table>
+      <tr><th>Feature</th><th>DevFlow</th><th>Cookiecutter</th><th>Manual Setup</th></tr>
+      <tr><td>Project scaffolding</td><td class="check">✓ 9 templates</td><td class="check">✓ Many</td><td class="cross">✗ Hours</td></tr>
+      <tr><td>Built-in linting</td><td class="check">✓ Ruff + Black</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>CI/CD pre-configured</td><td class="check">✓ GitHub Actions</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>Code audit & scoring</td><td class="check">✓ 11 checks</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>Auto-fix command</td><td class="check">✓ One command</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>Release automation</td><td class="check">✓ Version + changelog</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>Docker support</td><td class="check">✓ Built-in</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>CI/CD pipeline gen</td><td class="check">✓ Real YAML output</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="section reveal" id="faq">
+  <h2>Questions you might <em>have</em></h2>
+  <div class="faq">
+    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>What do I get with Premium?</h4><div class="answer"><p>One license unlocks premium features across all 33 tools: multi-environment pipeline configs, approval gates, infrastructure-as-code templates, prompt A/B testing, advanced rule packs, and analytics dashboards. Lifetime access, all 1.x updates included.</p></div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>Is there a free trial?</h4><div class="answer"><p>Every tool has a generous free tier — no time limit, no credit card required. You only pay if the premium features are worth it to you.</p></div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>How do I install?</h4><div class="answer"><p><strong>PyPI:</strong> <code>pip install kryptorious-&lt;name&gt;</code> · <strong>Actions:</strong> <code>uses: CodeGero/&lt;name&gt;@v1</code> · <strong>npm:</strong> <code>npm i -g kryptorious-&lt;name&gt;</code></p></div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>Commercial use?</h4><div class="answer"><p>Yes. All tools are MIT licensed — free for any use. Premium adds advanced features but core tools remain free forever.</p></div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><h4>How do I get support?</h4><div class="answer"><p>Free: GitHub issues. Premium: priority email (24h response) + private Slack community.</p></div></div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/CodeGero">GitHub</a>
+    <a href="https://pypi.org/user/kryptorious/">PyPI</a>
+    <a href="https://www.npmjs.com/~kryptorious">npm</a>
+    <a href="https://kryptorious.gumroad.com/l/jbvet">Gumroad</a>
+  </div>
+  <p>Kryptorious Quantum Biosciences, Inc. · MIT Licensed · <a href="https://codegero.github.io/">codegero.github.io</a></p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Typewriter
+(function(){
+  const lines = [
+    {t:'<span class="prompt">$</span> <span class="cmd">devflow init my-api --template api</span>',d:600},
+    {t:'<span class="out">  ✓ Created 8 files — pyproject.toml, src/, tests/, CI, Docker, git</span>',d:300},
+    {t:'<span class="out">  ✓ Initialized git repository</span>',d:300},
+    {t:'',d:400},
+    {t:'<span class="prompt">$</span> <span class="cmd">cd my-api && devflow audit</span>',d:600},
+    {t:'<span class="out">  72/100 — 8 passed, 3 warnings, 1 error</span>',d:200},
+    {t:'<span class="warn">  ! black not installed  ·  ✗ tests not passing</span>',d:300},
+    {t:'',d:400},
+    {t:'<span class="prompt">$</span> <span class="cmd">devflow fix --apply</span>',d:500},
+    {t:'<span class="success">  ✓ Formatted with black  ·  ✓ Imports sorted  ·  ✓ Lint fixed</span>',d:300},
+    {t:'',d:400},
+    {t:'<span class="prompt">$</span> <span class="cmd">devflow ship --bump patch --push</span>',d:600},
+    {t:'<span class="success">  ✓ Audit passed (94/100)  ·  v0.1.1 tagged  ·  Pushed</span>',d:400},
+    {t:'<span class="highlight">  🚀 Shipped my-api v0.1.1</span>',d:800},
+    {t:'',d:500},
+    {t:'<span class="prompt">$</span> <span class="cmd">devflow pipeline --deploy docker</span>',d:600},
+    {t:'<span class="success">  ✓ Generated .github/workflows/ci.yml</span>',d:300},
+    {t:'<span class="out">  Lint · Typecheck · Security · Test · Build · Deploy · Release</span>',d:400},
+    {t:'',d:500},
+    {t:'<span class="prompt">$</span> <span class="cursor"></span>',d:99999},
+  ];
+
+  const el = document.getElementById('terminal');
+  let i = 0;
+  function type(){
+    if(i >= lines.length){el.innerHTML+=lines[lines.length-1].t;return}
+    el.innerHTML += '<span class="line">'+lines[i].t+'</span>';
+    i++;setTimeout(type,lines[i-1].d);
+  }
+  setTimeout(type,600);
+})();
+
+// Scroll reveal
+(function(){
+  const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
+
+// Counter animation
+(function(){
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;const t=e.target,to=parseInt(t.dataset.target);if(!to||t.dataset.done)return;t.dataset.done=1;let c=0;const s=to>20?40:100,iv=setInterval(()=>{c+=Math.ceil(to/(to>20?30:15));if(c>=to){c=to;clearInterval(iv)}t.textContent=c},s)})},{threshold:0.5});
+  document.querySelectorAll('.stat-num[data-target]').forEach(el=>obs.observe(el));
+})();
+
+// Products
+const P=[{n:"DevFlow",d:"Scaffold, audit, fix, ship — 9 templates, CI/CD generator.",i:"pip install kryptorious-devflow",p:"pypi",u:"https://pypi.org/project/kryptorious-devflow/"},{n:"GitSweep",d:"Find stale branches, large files, analyze history.",i:"pip install kryptorious-gitsweep",p:"pypi",u:"https://pypi.org/project/kryptorious-gitsweep/"},{n:"DataForge",d:"Universal converter — JSON ↔ YAML ↔ CSV ↔ XML.",i:"pip install kryptorious-dataforge",p:"pypi",u:"https://pypi.org/project/kryptorious-dataforge/"},{n:"EnvGuard",d:"Validate, generate, audit .env files. Catch secrets.",i:"pip install kryptorious-envguard",p:"pypi",u:"https://pypi.org/project/kryptorious-envguard/"},{n:"TestForge",d:"Auto-generate pytest tests from Python source.",i:"pip install kryptorious-testforge",p:"pypi",u:"https://pypi.org/project/kryptorious-testforge/"},{n:"CSVClean",d:"Analyze CSVs — encoding, types, duplicates, score.",i:"pip install kryptorious-csvclean",p:"pypi",u:"https://pypi.org/project/kryptorious-csvclean/"},{n:"JSONGuard",d:"Validate, format, analyze JSON. Catch broken files.",i:"pip install kryptorious-jsonguard",p:"pypi",u:"https://pypi.org/project/kryptorious-jsonguard/"},{n:"MetaGuard",d:"Metadata hygiene scan — version drift, stale changelog, missing license, secret files, dead README links.",i:"pip install kryptorious-metaguard",p:"pypi",u:"https://pypi.org/project/kryptorious-metaguard/"},,{n:"Python Guardian",d:"One step: ruff + black + mypy + bandit + pytest.",i:"CodeGero/python-guardian@v1",p:"github",u:"https://github.com/CodeGero/python-guardian"},{n:"Release Forge",d:"Auto-detect bump, changelog, GitHub release.",i:"CodeGero/release-forge@v1",p:"github",u:"https://github.com/CodeGero/release-forge"},{n:"PR Sentinel",d:"Auto-label, check descriptions, warn on large PRs.",i:"CodeGero/pr-sentinel@v1",p:"github",u:"https://github.com/CodeGero/pr-sentinel"},{n:"Secret Scanner",d:"Scan PRs for hardcoded API keys and tokens.",i:"CodeGero/secret-scanner@v1",p:"github"... [truncated]
+
+function filterProducts(pl,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');render(pl==='all'?P:P.filter(x=>x.p===pl))}
+function render(list){
+  document.getElementById('product-grid').innerHTML=list.map((x,i)=>`
+    <div class="product-card" style="animation:fadeUp 0.3s ${i*0.03}s both">
+      <span class="tag tag-${x.p==='pypi'?'py':x.p==='github'?'gh':'npm'}">${x.p==='pypi'?'PyPI':x.p==='github'?'GitHub Action':'npm'}</span>
+      <h3><a href="${x.u}">${x.n}</a></h3><p class="desc">${x.d}</p>
+      <div class="install-wrap"><code>${x.i}</code><button class="copy-btn" onclick="copyInstall(this,'${x.i.replace(/'/g,"\\'")}')">Copy</button></div>
+      <div class="links"><a href="${x.u}">Docs →</a><a href="https://kryptorious.gumroad.com/l/jbvet">Premium →</a></div>
+    </div>`).join('')
+}
+render(P);
+
+function copyInstall(btn,text){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},1500);
+  });
+}
+</script>
+<style>@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}</style>
 </body>
 </html>
