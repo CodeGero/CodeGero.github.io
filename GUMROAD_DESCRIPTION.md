@@ -1,4 +1,4 @@
-## 33 Developer Tools. One $9 License. Lifetime.
+## 31 Developer Tools. One $9 License. Lifetime.
 
 Stop juggling a drawer full of half-maintained utilities. One suite replaces them all — scaffold, audit, secure, test, and ship from CLI and CI.
 
@@ -61,13 +61,13 @@ Auto-generate pytest tests from Python source.
 pip install kryptorious-testforge
 ```
 
-### 📚 All 33 Tools Included
+### 📚 All 31 Tools Included
 
-**PyPI (10):** DevFlow, GitSweep, DataForge, EnvGuard, TestForge, CSVClean, JSONGuard, APIGuard, DraftGuard, MetaGuard
+**PyPI (11):** DevFlow, GitSweep, DataForge, EnvGuard, TestForge, CSVClean, JSONGuard, APIGuard, DraftGuard, MetaGuard
 
-**GitHub Actions (16):** Python Guardian, Release Forge, PR Sentinel, Secret Scanner, Stale Bot, Docker Guardian, Spell Guardian, Merge Guardian, ML Guardian, Dependency Bot, AI Code Lint, Coverage Gate, Go Guardian, Rust Guardian, License Guardian, Dependency Auditor
+**GitHub Actions (15):** Python Guardian, Release Forge, PR Sentinel, Secret Scanner, Stale Bot, Docker Guardian, Spell Guardian, Merge Guardian, ML Guardian, Dependency Bot, AI Code Lint, Coverage Gate, Go Guardian, Rust Guardian, License Guardian, Dependency Auditor
 
-**npm (6):** DevKit, EnvGuard, QuickLint, LogGuard, ConfigSync, PortCheck
+**npm (5):** DevKit, EnvGuard, LogGuard, ConfigSync, PortCheck
 
 **DevFlow Premium (included with this license):** multi-environment CI/CD configs (staging auto / production with manual approval gate), Dockerfile + docker-compose, and per-environment Terraform stubs. Activate with `devflow activate <KEY>`.
 
@@ -75,7 +75,7 @@ pip install kryptorious-testforge
 
 ### What You Get
 
-✅ All 33 tools — core features, MIT licensed
+✅ All 31 tools — core features, MIT licensed
 ✅ DevFlow Premium: multi-env pipeline generator, approval gates, infra-as-code templates
 ✅ Unlimited personal use
 ✅ Unlimited commercial use
