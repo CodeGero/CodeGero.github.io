@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Actions CI/CD: The 5-Minute Pipeline That Actually Gates | Kryptorious</title>
+<meta name="description" content="A complete GitHub Actions CI/CD pipeline you can paste: lint, type-check, security scan, test matrix, and a guarded release. No YAML-from-scratch required.">
+<link rel="canonical" href="https://codegero.github.io/blog/github-actions-cicd-5min.html">
+<style>
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:720px;margin:0 auto;padding:2rem;line-height:1.7}
+h1{color:#58a6ff;line-height:1.25}
+h2{color:#58a6ff;margin-top:2.5rem}
+a{color:#58a6ff}
+code{background:#161b22;padding:.15rem .4rem;border-radius:4px;font-family:'SF Mono',Consolas,monospace;font-size:.9em}
+pre{background:#161b22;padding:1rem;border-radius:8px;overflow-x:auto}
+pre code{background:none;padding:0}
+.date{color:#8b949e;font-size:.85rem;margin-bottom:2rem}
+.back{margin-top:3rem;display:inline-block}
+.meta{color:#8b949e;font-size:.85rem}
+</style>
+</head>
+<body>
+<h1>GitHub Actions CI/CD: The 5-Minute Pipeline That Actually Gates</h1>
+<div class="date">July 9, 2026 · 5 min read</div>
+
+<p>Most CI tutorials give you a green pipeline that checks nothing. A real gate fails when code is bad. Here's a pipeline that actually protects <code>main</code> — and the drop-in Actions that remove the YAML entirely.</p>
+
+<h2>The gate, in 5 minutes</h2>
+<pre><code>name: CI
+on: [push, pull_request]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install ruff black mypy bandit pytest
+      - run: ruff check .
+      - run: black --check .
+      - run: mypy src/
+      - run: bandit -r src/ -f txt
+      - run: pytest</code></pre>
+<p>Every one of those steps exits non-zero on a problem. No <code>|| true</code>. No "warning" that gets ignored.</p>
+
+<h2>The release gate</h2>
+<p>A separate job tags and ships only when quality passes:</p>
+<pre><code>  release:
+    needs: [quality]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: CodeGero/release-forge@v1
+        with: {github-token: ${{ secrets.GITHUB_TOKEN }}</code></pre>
+
+<h2>The no-YAML shortcut</h2>
+<p>Writing that by hand every repo is the tax. The Kryptorious Actions drop in one line:</p>
+<ul>
+<li><a href="https://github.com/CodeGero/python-guardian">CodeGero/python-guardian</a> — ruff + black + mypy + bandit + pytest, one action.</li>
+<li><a href="https://github.com/CodeGero/release-forge">CodeGero/release-forge</a> — version bump, changelog, GitHub release.</li>
+<li><a href="https://github.com/CodeGero/pr-sentinel">CodeGero/pr-sentinel</a> — labels, description checks, size warnings.</li>
+</ul>
+
+<h2>Multi-environment, properly</h2>
+<p>Staging deploys automatically; production waits for a human. DevFlow Premium generates this exact pattern — see <a href="https://codegero.github.io/blog/python-package-version-drift.html">version drift</a> for why gating matters. The generated workflow has a manual approval gate on prod via GitHub Environments.</p>
+
+<p class="meta">Actions: <a href="https://github.com/CodeGero/python-guardian">python-guardian</a>, <a href="https://github.com/CodeGero/release-forge">release-forge</a>, <a href="https://github.com/CodeGero/pr-sentinel">pr-sentinel</a>. Part of the <a href="https://kryptorious.gumroad.com/l/jbvet">Kryptorious developer toolkit</a> (33 tools, $9 lifetime).</p>
+
+<p class="back"><a href="../blog/">← Back to Blog</a> · <a href="../">← Kryptorious Tools</a></p>
+</body>
+</html>
