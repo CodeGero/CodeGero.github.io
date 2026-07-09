@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Catch Python Package Version Drift Before You Ship | Kryptorious</title>
+<meta name="description" content="Version drift between pyproject.toml, __init__.__version__, and your git tag silently breaks installs. Here's how to detect and prevent it in CI.">
+<link rel="canonical" href="https://codegero.github.io/blog/python-package-version-drift.html">
+<style>
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:720px;margin:0 auto;padding:2rem;line-height:1.7}
+h1{color:#58a6ff;line-height:1.25}
+h2{color:#58a6ff;margin-top:2.5rem}
+a{color:#58a6ff}
+code{background:#161b22;padding:.15rem .4rem;border-radius:4px;font-family:'SF Mono',Consolas,monospace;font-size:.9em}
+pre{background:#161b22;padding:1rem;border-radius:8px;overflow-x:auto}
+pre code{background:none;padding:0}
+.date{color:#8b949e;font-size:.85rem;margin-bottom:2rem}
+.back{margin-top:3rem;display:inline-block}
+.meta{color:#8b949e;font-size:.85rem}
+</style>
+</head>
+<body>
+<h1>How to Catch Python Package Version Drift Before You Ship</h1>
+<div class="date">July 9, 2026 · 6 min read</div>
+
+<p>You published <code>1.2.3</code> to PyPI. Your git tag says <code>1.2.0</code>. And the <code>__version__</code> string in your package is still <code>0.9.0</code> from last year. None of your users will notice — until they <code>pip install</code> the "new" release and get the old code, or a downstream tool pins the wrong version and your changelog lies to them.</p>
+
+<p>This is <strong>version drift</strong>, and it's one of the most common silent failures in Python packaging. The worst part: <code>pytest</code> passes, <code>build</code> succeeds, and CI is green. Nothing catches it.</p>
+
+<h2>Where drift hides</h2>
+<p>A modern Python package can declare its version in three places, and they drift independently:</p>
+<ul>
+<li><code>pyproject.toml</code> → <code>[project].version</code> (what PyPI shows)</li>
+<li><code>src/&lt;pkg&gt;/__init__.py</code> → <code>__version__</code> (what <code>importlib.metadata</code> returns at runtime)</li>
+<li>your git tag <code>v1.2.3</code> (what your release tool reads)</li>
+</ul>
+<p>Each is edited by a different command, often by a different person, usually at 11pm before a release. Miss one and you've shipped a lie.</p>
+
+<h2>The manual check (don't do this forever)</h2>
+<pre><code># pyproject
+grep version pyproject.toml
+# init
+grep __version__ src/mypkg/__init__.py
+# git
+git describe --tags --abbrev=0</code></pre>
+<p>If those three don't match, stop and fix it. But this is exactly the kind of check people "forget" to run — which is why it belongs in CI.</p>
+
+<h2>Automate it: fail the build on drift</h2>
+<p>The cleanest approach is a metadata scanner that runs as a CI gate and exits non-zero on any mismatch. That's the entire job of <a href="https://pypi.org/project/kryptorious-metaguard/">kryptorious-metaguard</a>:</p>
+<pre><code>pip install kryptorious-metaguard
+metaguard check .</code></pre>
+<p>It compares all three version sources, plus catches a stack of related issues:</p>
+<ul>
+<li>Stale <code>CHANGELOG.md</code> (top entry doesn't match the declared version)</li>
+<li>Missing PEP 621 fields (<code>description</code>, <code>authors</code>, <code>license</code>, <code>requires-python</code>)</li>
+<li><code>license</code> declared in pyproject but no <code>LICENSE</code> file at root</li>
+<li>Committed secret files (<code>.env</code>, <code>*.pem</code>, <code>*.key</code>, <code>.pypirc</code>) — respects <code>.gitignore</code></li>
+<li>Optionally: dead README links</li>
+</ul>
+<p>Wire it into GitHub Actions and a single drifted version fails the pipeline instead of reaching PyPI:</p>
+<pre><code>- name: Metadata hygiene
+  run: metaguard check .</code></pre>
+
+<h2>Stop drift at the source</h2>
+<p>Even better than detecting drift: generating it. <a href="https://pypi.org/project/kryptorious-devflow/">DevFlow</a>'s <code>ship</code> command bumps the version, updates the changelog, and tags git in one step — so all three sources move together. Pair it with MetaGuard as a guard rail and version drift becomes a non-event.</p>
+
+<p class="meta">Tools mentioned: <a href="https://pypi.org/project/kryptorious-metaguard/">kryptorious-metaguard</a> · <a href="https://pypi.org/project/kryptorious-devflow/">kryptorious-devflow</a>. Part of the <a href="https://kryptorious.gumroad.com/l/jbvet">Kryptorious developer toolkit</a>.</p>
+
+<p class="back"><a href="../blog/">← Back to Blog</a> · <a href="../">← Kryptorious Tools</a></p>
+</body>
+</html>

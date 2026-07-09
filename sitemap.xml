@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://codegero.github.io/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://codegero.github.io/blog/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://codegero.github.io/blog/10-python-cli-tools-2026.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://codegero.github.io/blog/github-actions-cicd-pipeline.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://codegero.github.io/blog/stop-hardcoding-secrets.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://codegero.github.io/blog/scaffold-to-ship-automation.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://codegero.github.io/blog/python-package-version-drift.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://codegero.github.io/blog/python-metadata-best-practices.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

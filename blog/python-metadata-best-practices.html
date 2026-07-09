@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Package Metadata Best Practices (That Actually Get Checked) | Kryptorious</title>
+<meta name="description" content="The 7 metadata mistakes that make Python packages look unmaintained — and how to enforce correct metadata automatically before every publish.">
+<link rel="canonical" href="https://codegero.github.io/blog/python-metadata-best-practices.html">
+<style>
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:720px;margin:0 auto;padding:2rem;line-height:1.7}
+h1{color:#58a6ff;line-height:1.25}
+h2{color:#58a6ff;margin-top:2.5rem}
+a{color:#58a6ff}
+code{background:#161b22;padding:.15rem .4rem;border-radius:4px;font-family:'SF Mono',Consolas,monospace;font-size:.9em}
+pre{background:#161b22;padding:1rem;border-radius:8px;overflow-x:auto}
+pre code{background:none;padding:0}
+.date{color:#8b949e;font-size:.85rem;margin-bottom:2rem}
+.back{margin-top:3rem;display:inline-block}
+.meta{color:#8b949e;font-size:.85rem}
+</style>
+</head>
+<body>
+<h1>Python Package Metadata Best Practices (That Actually Get Checked)</h1>
+<div class="date">July 9, 2026 · 5 min read</div>
+
+<p>Your package's metadata is the first thing a stranger sees on PyPI. A missing description, a "Proprietary" license on an open-source tool, or a changelog that still says <code>0.1.0</code> signals "abandoned" faster than any bug. Here are the seven mistakes that quietly kill trust — and how to catch them automatically.</p>
+
+<h2>1. Version drift (the silent killer)</h2>
+<p>If <code>pyproject.toml</code>, <code>__init__.__version__</code>, and your git tag disagree, you've shipped a contradiction. <a href="https://pypi.org/project/kryptorious-metaguard/">metaguard</a> fails the build on any mismatch.</p>
+
+<h2>2. Missing PEP 621 fields</h2>
+<p>Since PEP 621, metadata lives in <code>[project]</code>. Forgetting <code>description</code>, <code>authors</code>, <code>requires-python</code>, or <code>readme</code> leaves your PyPI page half-empty. Minimum viable:</p>
+<pre><code>[project]
+name = "yourpkg"
+version = "1.0.0"
+description = "One line, no buzzwords."
+authors = [{name = "You"}]
+license = {text = "MIT"}
+requires-python = "&gt;=3.9"
+readme = "README.md"</code></pre>
+
+<h2>3. License declared, file missing</h2>
+<p>Declaring <code>license = {text = "MIT"}</code> but shipping no <code>LICENSE</code> file is a legal gray zone that spooks enterprise users. If you declare it, ship the file.</p>
+
+<h2>4. Stale changelog</h2>
+<p>A <code>CHANGELOG.md</code> whose top entry doesn't match the current version tells users you don't actually maintain the log. Keep the top header synced to the release.</p>
+
+<h2>5. Leaked secrets</h2>
+<p>A <code>.env</code>, <code>*.pem</code>, or <code>.pypirc</code> committed to the repo is an incident waiting to happen. These should never be publishable. (Note: secret files listed in <code>.gitignore</code> are correctly skipped by scanners.)</p>
+
+<h2>6. Dead README links</h2>
+<p>Links to docs that 404 make a package look dead. metaguard can probe README URLs over the network in CI:</p>
+<pre><code>metaguard check . --check-links</code></pre>
+
+<h2>7. Inconsistent naming</h2>
+<p>Your PyPI name (<code>kryptorious-devflow</code>), your import name (<code>devflow</code>), and your repo name should be obviously related. Mismatches confuse installers.</p>
+
+<h2>Enforce it, don't remember it</h2>
+<p>None of this should be a manual checklist. Run a metadata scanner as a CI gate so every publish is forced through the same bar:</p>
+<pre><code>- name: Metadata hygiene
+  run: pip install kryptorious-metaguard &amp;&amp; metaguard check .</code></pre>
+<p>A clean scan reports <code>Metadata Health: 100/100</code> and exits 0. Any error-severity issue exits 1 and blocks the release. That's the entire difference between a package that looks maintained and one that doesn't.</p>
+
+<p class="meta">Tool: <a href="https://pypi.org/project/kryptorious-metaguard/">kryptorious-metaguard</a>. Part of the <a href="https://kryptorious.gumroad.com/l/jbvet">Kryptorious developer toolkit</a> (33 tools, $9 lifetime).</p>
+
+<p class="back"><a href="../blog/">← Back to Blog</a> · <a href="../">← Kryptorious Tools</a></p>
+</body>
+</html>
