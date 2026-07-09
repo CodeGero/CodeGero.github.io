@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kryptorious Tools Blog</title>
+    <link>https://codegero.github.io/blog/</link>
+    <description>Developer workflow automation guides, tutorials, and best practices for Python, GitHub Actions, CI/CD, package metadata, and secrets security.</description>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://codegero.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>The 11 Python Developer Tools That Actually Save Time in 2026</title>
+      <link>https://codegero.github.io/blog/best-python-developer-tools-2026.html</link>
+      <guid>https://codegero.github.io/blog/best-python-developer-tools-2026.html</guid>
+      <pubDate>Wed, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Eleven Python CLIs that cut real work — no fluff.</description>
+    </item>
+    <item>
+      <title>Stop Hardcoding Secrets: A Developer's .env Security Checklist</title>
+      <link>https://codegero.github.io/blog/env-security-checklist.html</link>
+      <guid>https://codegero.github.io/blog/env-security-checklist.html</guid>
+      <pubDate>Wed, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Detect placeholders, catch leaks, gitignore right, scan CI.</description>
+    </item>
+    <item>
+      <title>GitHub Actions CI/CD: The 5-Minute Pipeline That Actually Gates</title>
+      <link>https://codegero.github.io/blog/github-actions-cicd-5min.html</link>
+      <guid>https://codegero.github.io/blog/github-actions-cicd-5min.html</guid>
+      <pubDate>Wed, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <description>A real CI gate + the drop-in Actions that remove the YAML.</description>
+    </item>
+    <item>
+      <title>How to Catch Python Package Version Drift Before You Ship</title>
+      <link>https://codegero.github.io/blog/python-package-version-drift.html</link>
+      <guid>https://codegero.github.io/blog/python-package-version-drift.html</guid>
+      <pubDate>Wed, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Version drift between pyproject.toml, __init__.__version__, and your git tag silently breaks installs.</description>
+    </item>
+    <item>
+      <title>Python Package Metadata Best Practices (That Actually Get Checked)</title>
+      <link>https://codegero.github.io/blog/python-metadata-best-practices.html</link>
+      <guid>https://codegero.github.io/blog/python-metadata-best-practices.html</guid>
+      <pubDate>Wed, 09 Jul 2026 00:00:00 +0000</pubDate>
+      <description>The 7 metadata mistakes that make packages look unmaintained.</description>
+    </item>
+    <item>
+      <title>10 Python CLI Tools Every Developer Should Know in 2026</title>
+      <link>https://codegero.github.io/blog/10-python-cli-tools-2026.html</link>
+      <guid>https://codegero.github.io/blog/10-python-cli-tools-2026.html</guid>
+      <pubDate>Fri, 05 Jul 2026 00:00:00 +0000</pubDate>
+      <description>From scaffolding to security, these CLI tools will transform your workflow.</description>
+    </item>
+    <item>
+      <title>Stop Hardcoding Secrets: A Developer Guide to .env Security</title>
+      <link>https://codegero.github.io/blog/stop-hardcoding-secrets.html</link>
+      <guid>https://codegero.github.io/blog/stop-hardcoding-secrets.html</guid>
+      <pubDate>Fri, 05 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Catch secrets before they leak with EnvGuard and Secret Scanner.</description>
+    </item>
+    <item>
+      <title>From Scaffold to Ship: Automating Your Entire Dev Workflow</title>
+      <link>https://codegero.github.io/blog/scaffold-to-ship-automation.html</link>
+      <guid>https://codegero.github.io/blog/scaffold-to-ship-automation.html</guid>
+      <pubDate>Fri, 05 Jul 2026 00:00:00 +0000</pubDate>
+      <description>How DevFlow replaces 10+ tools with a handful of commands.</description>
+    </item>
+  </channel>
+</rss>
