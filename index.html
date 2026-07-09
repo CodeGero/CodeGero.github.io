@@ -342,7 +342,37 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
 })();
 
 // Products
-const P=[{n:"DevFlow",d:"Scaffold, audit, fix, ship — 9 templates, CI/CD generator.",i:"pip install kryptorious-devflow",p:"pypi",u:"https://pypi.org/project/kryptorious-devflow/"},{n:"GitSweep",d:"Find stale branches, large files, analyze history.",i:"pip install kryptorious-gitsweep",p:"pypi",u:"https://pypi.org/project/kryptorious-gitsweep/"},{n:"DataForge",d:"Universal converter — JSON ↔ YAML ↔ CSV ↔ XML.",i:"pip install kryptorious-dataforge",p:"pypi",u:"https://pypi.org/project/kryptorious-dataforge/"},{n:"EnvGuard",d:"Validate, generate, audit .env files. Catch secrets.",i:"pip install kryptorious-envguard",p:"pypi",u:"https://pypi.org/project/kryptorious-envguard/"},{n:"TestForge",d:"Auto-generate pytest tests from Python source.",i:"pip install kryptorious-testforge",p:"pypi",u:"https://pypi.org/project/kryptorious-testforge/"},{n:"CSVClean",d:"Analyze CSVs — encoding, types, duplicates, score.",i:"pip install kryptorious-csvclean",p:"pypi",u:"https://pypi.org/project/kryptorious-csvclean/"},{n:"JSONGuard",d:"Validate, format, analyze JSON. Catch broken files.",i:"pip install kryptorious-jsonguard",p:"pypi",u:"https://pypi.org/project/kryptorious-jsonguard/"},{n:"MetaGuard",d:"Metadata hygiene scan — version drift, stale changelog, missing license, secret files, dead README links.",i:"pip install kryptorious-metaguard",p:"pypi",u:"https://pypi.org/project/kryptorious-metaguard/"},,{n:"Python Guardian",d:"One step: ruff + black + mypy + bandit + pytest.",i:"CodeGero/python-guardian@v1",p:"github",u:"https://github.com/CodeGero/python-guardian"},{n:"Release Forge",d:"Auto-detect bump, changelog, GitHub release.",i:"CodeGero/release-forge@v1",p:"github",u:"https://github.com/CodeGero/release-forge"},{n:"PR Sentinel",d:"Auto-label, check descriptions, warn on large PRs.",i:"CodeGero/pr-sentinel@v1",p:"github",u:"https://github.com/CodeGero/pr-sentinel"},{n:"Secret Scanner",d:"Scan PRs for hardcoded API keys and tokens.",i:"CodeGero/secret-scanner@v1",p:"github"... [truncated]
+const P=[{n:"DevFlow",d:"Scaffold, audit, fix, ship — 9 templates, CI/CD generator. Premium: multi-env pipelines.",i:"pip install kryptorious-devflow",p:"pypi",u:"https://pypi.org/project/kryptorious-devflow/"},
+{n:"MetaGuard",d:"Metadata hygiene scan — version drift, stale changelog, missing license, secret files.",i:"pip install kryptorious-metaguard",p:"pypi",u:"https://pypi.org/project/kryptorious-metaguard/"},
+{n:"CSVClean",d:"Analyze & clean CSVs — encoding, types, duplicates, normalization.",i:"pip install kryptorious-csvclean",p:"pypi",u:"https://pypi.org/project/kryptorious-csvclean/"},
+{n:"JSONGuard",d:"Validate, format, analyze JSON. Schema validation included.",i:"pip install kryptorious-jsonguard",p:"pypi",u:"https://pypi.org/project/kryptorious-jsonguard/"},
+{n:"DataForge",d:"Universal converter — JSON <-> YAML <-> TOML <-> CSV <-> XML. Merge files.",i:"pip install kryptorious-dataforge",p:"pypi",u:"https://pypi.org/project/kryptorious-dataforge/"},
+{n:"EnvGuard",d:"Validate, generate, audit .env files. Catch secrets before commit.",i:"pip install kryptorious-envguard",p:"pypi",u:"https://pypi.org/project/kryptorious-envguard/"},
+{n:"TestForge",d:"Auto-generate pytest tests from Python source.",i:"pip install kryptorious-testforge",p:"pypi",u:"https://pypi.org/project/kryptorious-testforge/"},
+{n:"GitSweep",d:"Find stale branches, large files, analyze git history.",i:"pip install kryptorious-gitsweep",p:"pypi",u:"https://pypi.org/project/kryptorious-gitsweep/"},
+{n:"DepGuard",d:"Cross-ecosystem dependency auditor: undeclared imports, unused deps, lockfile drift.",i:"pip install kryptorious-depguard",p:"pypi",u:"https://pypi.org/project/kryptorious-depguard/"},
+{n:"APIGuard",d:"OpenAPI spec linting — breaking-change detection across versions.",i:"pip install kryptorious-apiguard",p:"pypi",u:"https://pypi.org/project/kryptorious-apiguard/"},
+{n:"DraftGuard",d:"Environment config drift detection between stages.",i:"pip install kryptorious-draftguard",p:"pypi",u:"https://pypi.org/project/kryptorious-draftguard/"},
+{n:"DevKit",d:"Project scaffolding CLI for Node/TypeScript.",i:"npm i -g kryptorious-devkit",p:"npm",u:"https://www.npmjs.com/package/kryptorious-devkit"},
+{n:"EnvGuard (npm)",d:"Node port of EnvGuard — .env validation for JS projects.",i:"npm i -g kryptorious-envguard",p:"npm",u:"https://www.npmjs.com/package/kryptorious-envguard"},
+{n:"LogGuard",d:"Structured logging CLI for Node services.",i:"npm i -g kryptorious-logguard",p:"npm",u:"https://www.npmjs.com/package/kryptorious-logguard"},
+{n:"ConfigSync",d:"Sync config across environments safely.",i:"npm i -g kryptorious-configsync",p:"npm",u:"https://www.npmjs.com/package/kryptorious-configsync"},
+{n:"PortCheck",d:"Check port availability & conflicts during dev.",i:"npm i -g kryptorious-portcheck",p:"npm",u:"https://www.npmjs.com/package/kryptorious-portcheck"},
+{n:"Python Guardian",d:"One step: ruff + black + mypy + bandit + pytest.",i:"CodeGero/python-guardian@v1",p:"github",u:"https://github.com/CodeGero/python-guardian"},
+{n:"Release Forge",d:"Auto-detect bump, changelog, GitHub release.",i:"CodeGero/release-forge@v1",p:"github",u:"https://github.com/CodeGero/release-forge"},
+{n:"PR Sentinel",d:"Auto-label, check descriptions, warn on large PRs.",i:"CodeGero/pr-sentinel@v1",p:"github",u:"https://github.com/CodeGero/pr-sentinel"},
+{n:"Secret Scanner",d:"Scan PRs for hardcoded API keys and tokens.",i:"CodeGero/secret-scanner@v1",p:"github",u:"https://github.com/CodeGero/secret-scanner"},
+{n:"Stale Bot",d:"Close stale issues/PRs on a schedule.",i:"CodeGero/stale-bot@v1",p:"github",u:"https://github.com/CodeGero/stale-bot"},
+{n:"Docker Guardian",d:"Lint & verify Dockerfiles in CI.",i:"CodeGero/docker-guardian@v1",p:"github",u:"https://github.com/CodeGero/docker-guardian"},
+{n:"Spell Guardian",d:"Spell-check docs and code comments.",i:"CodeGero/spell-guardian@v1",p:"github",u:"https://github.com/CodeGero/spell-guardian"},
+{n:"Merge Guardian",d:"Enforce merge policies & branch protections.",i:"CodeGero/merge-guardian@v1",p:"github",u:"https://github.com/CodeGero/merge-guardian"},
+{n:"ML Guardian",d:"Validate ML model cards & training configs.",i:"CodeGero/ml-guardian@v1",p:"github",u:"https://github.com/CodeGero/ml-guardian"},
+{n:"Dependency Bot",d:"Audit deps for drift & vulnerabilities.",i:"CodeGero/dependency-bot@v1",p:"github",u:"https://github.com/CodeGero/dependency-bot"},
+{n:"AI Code Lint",d:"Catch hallucinated APIs & AI-code smells in Python.",i:"CodeGero/ai-lint@v1",p:"github",u:"https://github.com/CodeGero/ai-lint"},
+{n:"Coverage Gate",d:"Fail CI when coverage drops below threshold.",i:"CodeGero/coverage-gate@v1",p:"github",u:"https://github.com/CodeGero/coverage-gate"},
+{n:"Go Guardian",d:"Lint & vet Go code in one action.",i:"CodeGero/go-guardian@v1",p:"github",u:"https://github.com/CodeGero/go-guardian"},
+{n:"Rust Guardian",d:"Format & lint Rust in CI.",i:"CodeGero/rust-guardian@v1",p:"github",u:"https://github.com/CodeGero/rust-guardian"},
+{n:"License Guardian",d:"Verify license headers & SPDX compliance.",i:"CodeGero/license-guardian@v1",p:"github",u:"https://github.com/CodeGero/license-guardian"}];
 
 function filterProducts(pl,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');render(pl==='all'?P:P.filter(x=>x.p===pl))}
 function render(list){
