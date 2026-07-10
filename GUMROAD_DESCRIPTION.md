@@ -1,4 +1,4 @@
-## 31 Developer Tools. One $9 License. Lifetime.
+## 32 Developer Tools. One $9 License. Lifetime.
 
 Stop juggling a drawer full of half-maintained utilities. One suite replaces them all — scaffold, audit, secure, test, and ship from CLI and CI.
 
@@ -61,9 +61,9 @@ Auto-generate pytest tests from Python source.
 pip install kryptorious-testforge
 ```
 
-### 📚 All 31 Tools Included
+### 📚 All 32 Tools Included
 
-**PyPI (11):** DevFlow, GitSweep, DataForge, EnvGuard, TestForge, CSVClean, JSONGuard, APIGuard, DraftGuard, MetaGuard
+**PyPI (12):** DevFlow, GitSweep, DataForge, EnvGuard, TestForge, CSVClean, JSONGuard, APIGuard, DraftGuard, MetaGuard, wfGuard
 
 **GitHub Actions (15):** Python Guardian, Release Forge, PR Sentinel, Secret Scanner, Stale Bot, Docker Guardian, Spell Guardian, Merge Guardian, ML Guardian, Dependency Bot, AI Code Lint, Coverage Gate, Go Guardian, Rust Guardian, License Guardian, Dependency Auditor
 
@@ -75,7 +75,7 @@ pip install kryptorious-testforge
 
 ### What You Get
 
-✅ All 31 tools — core features, MIT licensed
+✅ All 32 tools — core features, MIT licensed
 ✅ DevFlow Premium: multi-env pipeline generator, approval gates, infra-as-code templates
 ✅ Unlimited personal use
 ✅ Unlimited commercial use
