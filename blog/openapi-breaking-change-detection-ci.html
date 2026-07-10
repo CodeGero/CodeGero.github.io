@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catch OpenAPI breaking changes before they ship. Wire APIGuard's breaking-change detection into CI to fail the build on removed endpoints, type changes, and required-field breaks.">
+    <meta name="keywords" content="openapi breaking change detection, openapi change detection ci, api breaking change python, openapi diff tool, contract breaking change">
+    <meta name="author" content="Kryptorious Tools">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Detect OpenAPI Breaking Changes in CI Before They Break Consumers">
+    <meta property="og:description" content="Catch removed endpoints, type changes, and required-field breaks before they ship — with a Python CLI that drops into any CI.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://codegero.github.io/blog/openapi-breaking-change-detection-ci.html">
+    <meta property="og:site_name" content="Kryptorious Tools">
+    <meta property="article:published_time" content="2026-07-11T00:00:00Z">
+    <meta property="article:author" content="Kryptorious Tools">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Detect OpenAPI Breaking Changes in CI Before They Break Consumers">
+    <meta name="twitter:description" content="A drop-in Python CLI that fails your build on OpenAPI breaking changes.">
+
+    <title>Detect OpenAPI Breaking Changes in CI Before They Break Consumers — Kryptorious Tools</title>
+
+    <link rel="canonical" href="https://codegero.github.io/blog/openapi-breaking-change-detection-ci.html">
+
+    <style>
+        :root {
+            --bg: #0d1117;
+            --fg: #c9d1d9;
+            --accent: #58a6ff;
+            --border: #30363d;
+            --code-bg: #161b22;
+            --h2: #f0f6fc;
+            --link: #58a6ff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.75;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        h1 { font-size: 2.2rem; color: var(--h2); margin: 1.5rem 0 1rem; line-height: 1.3; }
+        h2 { font-size: 1.6rem; color: var(--h2); margin: 2.5rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 1.2rem; color: var(--h2); margin: 1.8rem 0 0.5rem; }
+        p { margin: 0.8rem 0; }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem 1.2rem;
+            overflow-x: auto;
+            font-size: 0.88rem;
+            margin: 1rem 0;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+            font-size: 0.88rem;
+        }
+        p code, li code { background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { padding-left: 1.5rem; margin: 0.8rem 0; }
+        li { margin: 0.3rem 0; }
+        .meta { color: #8b949e; font-size: 0.9rem; margin: 0.5rem 0 2rem; }
+        .cta {
+            background: linear-gradient(135deg, #1a2332, #0d1c2e);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .cta strong { color: #f0f6fc; }
+        .step {
+            background: #161b22;
+            border-left: 3px solid #58a6ff;
+            padding: 0.6rem 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .step strong { color: #58a6ff; }
+        hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+        .related { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem 1.25rem; margin: 2rem 0; }
+        .related h3 { margin-top: 0; border: none; }
+    </style>
+</head>
+<body>
+
+<article itemscope itemtype="https://schema.org/Article">
+
+<h1 itemprop="headline">Detect OpenAPI Breaking Changes in CI Before They Break Consumers</h1>
+
+<div class="meta">
+    <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+        <span itemprop="name">Kryptorious Tools</span>
+    </span>
+    &middot;
+    <time datetime="2026-07-11" itemprop="datePublished">July 11, 2026</time>
+    &middot; ~1,050 words
+</div>
+
+<div itemprop="articleBody">
+
+<p>
+    Your API contract is a promise. The moment you delete an endpoint, change a response
+    type, or make a field required, every consumer that depended on the old shape breaks —
+    usually in production, usually at 2 a.m., usually with a senior engineer paged.
+</p>
+
+<p>
+    OpenAPI specs are machine-readable, which means the breaking-change check can be
+    <strong>machine-enforced</strong>. You don't need a reviewer to notice that
+    <code>GET /items</code> vanished. A CI step can fail the build the second it happens.
+    This guide shows you how to wire that check in with a single Python CLI —
+    <a href="https://pypi.org/project/kryptorious-apiguard/">kryptorious-apiguard</a> —
+    and the real output it produces on a deliberately broken spec.
+</p>
+
+<h2>What Counts as a Breaking Change?</h2>
+
+<p>
+    Not every diff matters. Adding an optional field is safe; removing an endpoint is not.
+    ApiGuard classifies each change into one of three buckets:
+</p>
+
+<ul>
+    <li><strong>Breaking (CRITICAL)</strong> — consumers will fail: removed endpoints, removed operations, type changes, newly required fields, changed enum values.</li>
+    <li><strong>Non-breaking</strong> — additive and safe: new endpoints, new optional fields, new responses.</li>
+    <li><strong>Deprecations</strong> — flagged but tolerated: a marked-deprecated operation still in use.</li>
+</ul>
+
+<p>
+    The point of the split is the CI gate: fail on <em>breaking</em>, warn on the rest.
+</p>
+
+<h2>Step 1: Install and Run a Real Diff</h2>
+
+<p>Install the CLI:</p>
+
+<pre><code>pip install kryptorious-apiguard
+apiguard --help</code></pre>
+
+<p>
+    ApiGuard ships three commands — <code>diff</code> (compare two specs),
+    <code>validate</code> (structural check of one spec), and <code>version</code>.
+    The money command is <code>diff</code>. Below is the actual output from comparing
+    an old spec (v1.0.0) against a "refactored" new spec (v2.0.0) that quietly removed
+    an endpoint:
+</p>
+
+<pre><code>$ apiguard diff old.yaml new.yaml
+
+                                             🔍 API Breaking Changes Report
+
+┌────┬────────────┬──────────┬────────────────────────────┬────────┬───────────────────────────────────────────────────┐
+│ #  │ Severity   │ Rule     │ Path                       │ Method │ Message                                           │
+├────┼────────────┼──────────┼──────────┼────────────────────────────┼────────┼───────────────────────────────────────────────────┤
+│ 1  │ 🔴         │ PATH-001 │ /items                     │ GET    │ Removed endpoint: GET /items                      │
+│    │ CRITICAL   │          │                            │        │                                                   │
+└────┴────────────┴──────────┴────────────────────────────┴────────┴───────────────────────────────────────────────────┘
+
+📊 Summary
+Total changes: 1
+Breaking: 1 | Non-breaking: 0 | Deprecated: 0
+🔴 CRITICAL: 1
+
+✖ Found 1 change(s) at or above error severity</code></pre>
+
+<p>
+    The tool exited non-zero (the <code>✖ Found 1 change(s) at or above error severity</code>
+    line is the CI signal). That single CRITICAL is exactly the kind of change that silently
+    breaks a mobile app in production.
+</p>
+
+<h2>Step 2: Machine-Readable Output for CI</h2>
+
+<p>
+    Human-readable tables are nice in logs, but a pipeline needs structured data. ApiGuard
+    emits JSON and SARIF alongside the table. The same diff, as JSON:
+</p>
+
+<pre><code>$ apiguard diff old.yaml new.yaml --format json
+
+{
+  "tool": "kryptorious-apiguard",
+  "version": "1.0.0",
+  "summary": {
+    "total_changes": 1,
+    "by_severity": { "critical": 1 },
+    "by_category": { "breaking": 1 }
+  },
+  "changes": [
+    {
+      "rule_id": "PATH-001",
+      "message": "Removed endpoint: GET /items",
+      "severity": "critical",
+      "category": "breaking",
+      "path": "/items",
+      "method": "GET"
+    }
+  ]
+}</code></pre>
+
+<p>
+    Pipe that into a gate, post it as a PR comment, or fail the build when
+    <code>by_category.breaking &gt; 0</code>. The exit code already does the
+    heavy lifting — no parsing required for the basic case.
+</p>
+
+<h2>Step 3: Wire It Into Your Pipeline</h2>
+
+<p>
+    Most teams keep their spec at <code>openapi.yaml</code> and regenerate it from code, or
+    hand-edit it. Either way, diffing the committed spec against the proposed change on every
+    PR is the safest pattern. A minimal GitHub Actions job:
+</p>
+
+<pre><code># .github/workflows/api-contract.yml
+name: API Contract Check
+on: [pull_request]
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install kryptorious-apiguard
+      - name: Diff spec against base
+        run: |
+          git show origin/${{ github.base_ref }}:openapi.yaml > base.yaml
+          apiguard diff base.yaml openapi.yaml --format json</code></pre>
+
+<p>
+    If a PR removes an endpoint or changes a type, this job fails before review — and the
+    author sees exactly which rule fired (<code>PATH-001</code>, <code>TYPE-xxx</code>,
+    <code>REQ-xxx</code>, …) instead of a confused consumer ticket two weeks later.
+</p>
+
+<h2>Why a CLI Instead of a SaaS?</h2>
+
+<p>
+    Contract diffing is a solved problem in Java (openapi-diff) and a linter in Spectral,
+    but there was no native, dependency-light Python CLI that drops into a Python shop's CI
+    without a JVM or a hosted service. ApiGuard is the gap-filler: one
+    <code>pip install</code>, runs anywhere Python runs, no account, no network call.
+    For shops already on <a href="https://codegero.github.io">the Kryptorious toolchain</a>,
+    it slots next to Python Guardian and EnvGuard in the same workflow file.
+</p>
+
+<div class="cta">
+    <strong>🔧 ApiGuard is one of 31 free MIT-licensed developer tools.</strong><br>
+    Want the bundle with DevFlow Premium (multi-env CI, approval gates, infra-as-code)?
+    <a href="https://kryptorious.gumroad.com/l/jbvet" rel="nofollow sponsored" style="color:#58a6ff;">Get it — $9 lifetime →</a><br>
+    Explore all tools at <a href="https://codegero.github.io">codegero.github.io</a>.
+</div>
+
+<h2>The Takeaway</h2>
+
+<p>
+    A broken contract is the cheapest bug to catch at diff time and the most expensive to
+    catch in production. The check is deterministic, fast, and offline — there is no reason
+    it should live in a reviewer's memory instead of your pipeline. Add the <code>diff</code>
+    step, fail on <code>breaking &gt; 0</code>, and let the build be the bad-news messenger.
+</p>
+
+<div class="related">
+    <h3>Related reading</h3>
+    <ul>
+        <li><a href="https://codegero.github.io/blog/github-actions-cicd-pipeline.html">The Ultimate GitHub Actions CI/CD Pipeline in 5 Minutes</a></li>
+        <li><a href="https://codegero.github.io/blog/python-package-version-drift.html">How to Catch Python Package Version Drift Before You Ship</a></li>
+        <li><a href="https://codegero.github.io/blog/env-security-checklist.html">Stop Hardcoding Secrets: A Developer's .env Security Checklist</a></li>
+    </ul>
+</div>
+
+<p style="margin-top:2rem"><a href="../">← Back to Kryptorious Tools</a> · <a href="https://kryptorious.gumroad.com/l/jbvet">Get all 31 tools — $9 lifetime →</a></p>
+
+</div><!-- /articleBody -->
+
+</article>
+
+<!-- Schema.org Article -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Detect OpenAPI Breaking Changes in CI Before They Break Consumers",
+  "description": "Catch OpenAPI breaking changes before they ship. Wire APIGuard's breaking-change detection into CI to fail the build on removed endpoints, type changes, and required-field breaks.",
+  "author": { "@type": "Organization", "name": "Kryptorious Tools" },
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Kryptorious Tools",
+    "url": "https://codegero.github.io"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://codegero.github.io/blog/openapi-breaking-change-detection-ci.html"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "OpenAPI breaking change detection"
+  },
+  "wordCount": 1050
+}
+</script>
+
+</body>
+</html>
