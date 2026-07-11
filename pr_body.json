@@ -1,0 +1,6 @@
+{
+  "title": "Add Kryptorious Python dev tooling to CLI Tools",
+  "body": "Adds a small set of MIT-licensed CLI tools for Python developers under a new 'Python Dev Tooling' sub-group in the CLI Tools section:\n\n- kryptorious-depguard: cross-ecosystem dependency auditor (undeclared imports, unused deps, unpinned specifiers, lockfile drift)\n- kryptorious-apiguard: OpenAPI breaking-change detector (flags removed endpoints / type changes before ship)\n- kryptorious-gitsweep: git repository hygiene (prunes stale branches, surfaces forgotten worktrees)\n- kryptorious-csvclean: validates and normalizes CSV/TSV from the command line\n\nAll are published to PyPI, open-source (MIT), and have public repositories. Happy to adjust placement or remove any that don't fit the list's scope.",
+  "head": "CodeGero:pr/kryptorious-tools",
+  "base": "master"
+}

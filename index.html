@@ -14,8 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kryptorious — Developer Tool Suite">
 <meta name="twitter:description" content="32 developer tools. One $9 license. Ship better code.">
-<script type="application/ld+json">{"@context":"https://***@type":"SoftwareApplication","name":"Kryptorious Developer Tool Suite","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD"},"description":"32 open-source developer tools. Scaffold, audit, secure, test, and ship faster.","author":{"@type":"Organization","name":"Kryptorious Quantum Biosciences, Inc."}}</script>
-<script src="https://gumroad.com/js/gumroad.js" async></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Kryptorious Developer Tool Suite","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD"},"description":"32 open-source developer tools. Scaffold, audit, secure, test, and ship faster.","author":{"@type":"Organization","name":"Kryptorious Quantum Biosciences, Inc."}}</script>
 <style>
 :root{
   --bg:#08080d;--bg2:#0c0c14;--surface:#111118;--border:#1c1c2a;--border-hover:#282840;
@@ -172,7 +171,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
       <a href="blog/">Blog</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a href="https://kryptorious.gumroad.com/l/jbvet" class="nav-cta">Get Premium $9</a>
+      <a href="https://codegero.github.io/store/" class="nav-cta">Get Premium $9</a>
     </div>
   </div>
 </nav>
@@ -184,7 +183,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
   <h1>Ship <em>better code</em><br>in half the time</h1>
   <p class="hero-sub">One developer tool suite replacing 15+ separate utilities. Free tier forever. Premium when you're ready.</p>
   <div class="hero-cta">
-    <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-gumroad">Get Premium — $9 Lifetime</a>
+    <a href="https://codegero.github.io/store/" class="btn btn-gumroad">Get Premium — $9 Lifetime</a>
     <a href="#demo" class="btn btn-ghost">Watch it run ↓</a>
   </div>
 </header>
@@ -245,7 +244,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
       <div class="popular">One-time payment</div>
       <h3>Premium Suite</h3><div class="price price-premium">$9</div><div class="price-sub">lifetime · all updates</div>
       <ul><li>Everything in Free</li><li>DevFlow Premium: multi-env CI/CD</li><li>Production approval gates</li><li>Dockerfile + docker-compose</li><li>Per-environment Terraform stubs</li><li>Lifetime updates (1.x)</li><li>Priority email support</li></ul>
-      <a href="https://kryptorious.gumroad.com/l/jbvet" class="btn btn-gumroad" style="width:100%;justify-content:center">Get Premium — $9</a>
+      <a href="https://codegero.github.io/store/" class="btn btn-gumroad" style="width:100%;justify-content:center">Get Premium — $9</a>
     </div>
   </div>
 </div>
@@ -286,7 +285,7 @@ footer a{color:var(--blue)}.footer-links{display:flex;gap:1.5rem;justify-content
     <a href="https://github.com/CodeGero">GitHub</a>
     <a href="https://pypi.org/user/kryptorious/">PyPI</a>
     <a href="https://www.npmjs.com/~kryptorious">npm</a>
-    <a href="https://kryptorious.gumroad.com/l/jbvet">Gumroad</a>
+    <a href="https://codegero.github.io/store/">Gumroad</a>
   </div>
   <p>Kryptorious Quantum Biosciences, Inc. · MIT Licensed · <a href="https://codegero.github.io/">codegero.github.io</a></p>
 </footer>
@@ -381,7 +380,7 @@ function render(list){
       <span class="tag tag-${x.p==='pypi'?'py':x.p==='github'?'gh':'npm'}">${x.p==='pypi'?'PyPI':x.p==='github'?'GitHub Action':'npm'}</span>
       <h3><a href="${x.u}">${x.n}</a></h3><p class="desc">${x.d}</p>
       <div class="install-wrap"><code>${x.i}</code><button class="copy-btn" onclick="copyInstall(this,'${x.i.replace(/'/g,"\\'")}')">Copy</button></div>
-      <div class="links"><a href="${x.u}">Docs →</a><a href="https://kryptorious.gumroad.com/l/jbvet">Premium →</a></div>
+      <div class="links"><a href="${x.u}">Docs →</a><a href="https://codegero.github.io/store/">Premium →</a></div>
     </div>`).join('')
 }
 render(P);

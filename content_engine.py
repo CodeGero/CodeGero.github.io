@@ -87,11 +87,11 @@ TOPICS = [
 <p>If you claim Python 3.9–3.12 support, test that matrix. <code>actions/checkout</code> plus a version matrix in GitHub Actions is the standard, maintained primitive.</p>
 <h2>3. Secret scan</h2>
 <p>A pre-commit + CI secret scan (gitleaks/trufflehog) stops the leak that becomes an incident.</p>
-<p>Three gates, zero cost, and the majority of "it broke in prod" disappears. The <a href="https://kryptorious.gumroad.com/l/jbvet">DevFlow Premium</a> bundle ships these as drop-in Actions with approval gates.</p>""",
+<p>Three gates, zero cost, and the majority of "it broke in prod" disappears. The <a href="https://codegero.github.io/store/">DevFlow Premium</a> bundle ships these as drop-in Actions with approval gates.</p>""",
     },
 ]
 
-CTA = """<div class="cta">🛠️ <strong>32 free MIT-licensed developer tools.</strong> Want the bundle with DevFlow Premium (multi-env CI, approval gates, infra-as-code)? <a href="https://kryptorious.gumroad.com/l/jbvet">Get it — $9 lifetime →</a></div>"""
+CTA = """<div class="cta">🛠️ <strong>32 free MIT-licensed developer tools.</strong> Want the bundle with DevFlow Premium (multi-env CI, approval gates, infra-as-code)? <a href="https://codegero.github.io/store/">Get the bundle →</a></div>"""
 
 def post_exists(slug):
     return os.path.exists(os.path.join(BLOG, f"{slug}.html"))
