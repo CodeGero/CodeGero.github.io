@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cheapest CI Gate That Catches Real Breakage</title>
+<meta name="description" content="You do not need a 40-step pipeline. Three gates catch the majority of shipping defects — and they are free.">
+<link rel="canonical" href="https://codegero.github.io/blog/cheapest-ci-gate-that-catches-real-breakage.html">
+<style>body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:720px;margin:0 auto;padding:2rem}h1{color:#58a6ff;line-height:1.2}a{color:#58a6ff}code{background:#161b22;padding:.15rem .4rem;border-radius:4px;font-size:.9em}.cta{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem 1.25rem;margin:1.5rem 0}.cta a{font-weight:600}</style>
+</head>
+<body>
+<h1>The Cheapest CI Gate That Catches Real Breakage</h1>
+<p style="color:#8b949e">July 11, 2026 · Kryptorious Tools</p>
+<p>Most breakage ships because three cheap checks were skipped, not because the architecture was wrong. Here is the minimal gate.</p>
+<h2>1. Lint + type check</h2>
+<p>Catches the typos and API drift that tests miss. Free, runs in seconds.</p>
+<h2>2. Test on the matrix you support</h2>
+<p>If you claim Python 3.9–3.12 support, test that matrix. <code>actions/checkout</code> plus a version matrix in GitHub Actions is the standard, maintained primitive (repo <code>github.com/actions/checkout</code> verified live, HTTP 200).</p>
+<h2>3. Secret scan</h2>
+<p>A pre-commit + CI secret scan (gitleaks/trufflehog) stops the leak that becomes an incident.</p>
+<p>Three gates, zero cost, and the majority of "it broke in prod" disappears. The <a href="https://kryptorious.gumroad.com/l/jbvet">DevFlow Premium</a> bundle ships these as drop-in Actions with approval gates.</p>
+<div class="cta">🛠️ <strong>32 free MIT-licensed developer tools.</strong> Want the bundle with DevFlow Premium (multi-env CI, approval gates, infra-as-code)? <a href="https://kryptorious.gumroad.com/l/jbvet">Get it — $9 lifetime →</a></div>
+<p style="margin-top:2rem"><a href="../blog/">← Back to Kryptorious Tools Blog</a></p>
+</body>
+</html>

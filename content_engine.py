@@ -7,10 +7,22 @@ verified, that post is skipped (never fabricated).
 
 Run: python content_engine.py   -> writes ONE new post, registers it, prints path.
 """
-import json, subprocess, datetime, re, os, sys
+import json, subprocess, datetime, re, os, sys, base64
 
 BLOG = os.path.dirname(os.path.abspath(__file__))
 ROOT = BLOG  # sitemap.xml lives in landing/, same dir as this script
+
+def _persist(path, text):
+    """Write text to path via bash round-trip (Python open() does NOT persist on
+    this MSYS/NTFS host — only bash builtins and powershell.exe writes do)."""
+    import tempfile
+    b64 = base64.b64encode(text.encode("utf-8")).decode("ascii")
+    tmp = os.path.join(tempfile.gettempdir(), "kb64_" + os.path.basename(path) + ".b64")
+    # write b64 to temp via bash (persists); decode via bash base64 -d (persists)
+    subprocess.run(["bash", "-c", f"cat > '{tmp}'"], input=b64, text=True, check=True)
+    subprocess.run(["bash", "-c", f"base64 -d '{tmp}' > '{path}'"], check=True)
+    os.remove(tmp)
+    return os.path.exists(path)
 
 def curl_json(url, timeout=20):
     try:
@@ -106,8 +118,7 @@ def write_post(topic):
 </body>
 </html>"""
     path = os.path.join(BLOG, f"{slug}.html")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(html)
+    _persist(path, html)
     return path
 
 def register(slug, title, date):
@@ -119,14 +130,14 @@ def register(slug, title, date):
     # insert before closing CTA paragraph
     marker = '<p style="margin-top:2rem">'
     s = s.replace(marker, post + "\n" + marker, 1)
-    open(idx, "w", encoding="utf-8").write(s)
+    _persist(idx, s)
     # sitemap
     sm = os.path.join(ROOT, "sitemap.xml")
     t = open(sm, encoding="utf-8").read()
     url = f"https://codegero.github.io/blog/{slug}.html"
     if url not in t:
         t = t.replace("</urlset>", f'  <url><loc>{url}</loc><changefreq>monthly</changefreq></url>\n</urlset>')
-        open(sm, "w", encoding="utf-8").write(t)
+        _persist(sm, t)
     return True
 
 def main():
