@@ -67,7 +67,7 @@ TOPICS = [
         "slug": "cheapest-ci-gate-that-catches-real-breakage",
         "title": "The Cheapest CI Gate That Catches Real Breakage",
         "blurb": "You do not need a 40-step pipeline. Three gates catch the majority of shipping defects — and they are free.",
-        "facts": [("github", lambda: gh_repo_exists("actions", "checkout"))],
+        "facts": [("github", lambda _: gh_repo_exists("actions", "checkout"))],
         "body": """<p>Most breakage ships because three cheap checks were skipped, not because the architecture was wrong. Here is the minimal gate.</p>
 <h2>1. Lint + type check</h2>
 <p>Catches the typos and API drift that tests miss. Free, runs in seconds.</p>
