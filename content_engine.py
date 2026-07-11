@@ -131,6 +131,7 @@ def register(slug, title, date):
 
 def main():
     date = datetime.date.today().isoformat()
+    published = []
     for t in TOPICS:
         if not post_exists(t["slug"]):
             # verify every required fact live before writing
@@ -141,9 +142,12 @@ def main():
             write_post(t)
         # register is idempotent (no-op if already in index/sitemap)
         registered = register(t["slug"], t["title"], date)
-        print(f"PUBLISHED {t['slug']} (registered={registered})")
+        published.append((t["slug"], registered))
+    if not published:
+        print("NOTHING TO PUBLISH (all topics done or unverifiable)")
         return 0
-    print("NOTHING TO PUBLISH (all topics done or unverifiable)")
+    for slug, reg in published:
+        print(f"PUBLISHED {slug} (registered={reg})")
     return 0
 
 if __name__ == "__main__":
