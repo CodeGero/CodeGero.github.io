@@ -65,11 +65,14 @@ async function loadPrices(){
     document.getElementById('p-art').textContent = (PRICES["art-pack"]/btc).toFixed(8);
   }catch(e){ /* prices shown as … if offline */ }
 }
+let MERCHANT_ADDR = "bc1q8j8d3s9jna9qxk8p6q8lvd35y5myel0l2a7yjf";
+// Refresh the merchant address from the live file (agent updates it on activation).
+fetch("MERCHANT_BTC.txt?ts=" + Date.now()).then(r=>r.text()).then(t=>{
+  const a = t.trim(); if(a.startsWith("bc1")||a.startsWith("1")||a.startsWith("3")) MERCHANT_ADDR = a;
+}).catch(()=>{});
 function buy(pid){
-  // Open the order helper. In production this calls the engine; here we surface
-  // the CLI command so the agent fulfills it. Replace MERCHANT_BTC with live addr.
-  const addr = "MERCHANT_BTC_ADDRESS";
-  alert("Run on the agent host:\n\npython store.py order " + pid + " btc " + addr + "\n\nThen share the returned BTC amount + address with the buyer.");
+  // Surface the exact order command for the agent to fulfill, with the live address.
+  alert("Run on the agent host:\n\npython store.py order " + pid + " btc " + MERCHANT_ADDR + "\n\nThen share the returned BTC amount + address with the buyer.\n\nMerchant address: " + MERCHANT_ADDR);
 }
 loadPrices();
 setInterval(loadPrices, 60000);
