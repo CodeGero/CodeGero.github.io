@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pin Dependencies or Break in Production: The Hash-Pinning Standard</title>
+<meta name="description" content="Permissive version ranges are a silent liability. Here is the mechanism and the exact workflow that makes a Python build reproducible.">
+<link rel="canonical" href="https://codegero.github.io/blog/pin-dependencies-or-break-in-production.html">
+<style>body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:720px;margin:0 auto;padding:2rem}h1{color:#58a6ff;line-height:1.2}a{color:#58a6ff}code{background:#161b22;padding:.15rem .4rem;border-radius:4px;font-size:.9em}.cta{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem 1.25rem;margin:1.5rem 0}.cta a{font-weight:600}</style>
+</head>
+<body>
+<h1>Pin Dependencies or Break in Production: The Hash-Pinning Standard</h1>
+<p style="color:#8b949e">2026-07-11 · Kryptorious Tools</p>
+<p>A <code>requirements.txt</code> that says <code>requests&gt;=2.0</code> does not describe a build. It describes a <em>range of possible builds</em> that depend on the clock, the mirror, and whatever shipped that morning. For anything you deploy, that is a silent liability.</p>
+<h2>The failure mode</h2>
+<p>Version ranges resolve at install time. Two engineers running the same file three days apart can get different transitive trees if a sub-dependency released a new minor in between. Same inputs, different outputs — the definition of a non-reproducible build. When a bug appears, "works on my machine" becomes literally true and completely useless.</p>
+<h2>The fix: hash-pinned requirements</h2>
+<p>pip supports <a href="https://pip.pypa.org/en/stable/topics/secure-installs/">hash-checking mode</a>. A line like <code>requests==2.31.0 --hash=sha256:...</code> makes pip refuse the package unless the downloaded artifact's hash matches. A compromised release fails closed instead of shipping.</p>
+<h2>Without the busywork</h2>
+<ul>
+<li><strong>pip-tools</strong> (<code>pip-compile</code>) locks transitive deps to exact versions with hashes.</li>
+<li><strong>pip-audit</strong> scans a locked environment against the PyPI vulnerability database.</li>
+</ul>
+<p>Wire both into CI and a green build means: exact versions, verified hashes, zero known-vulnerable pins.</p>
+<div class="cta">🛠️ <strong>32 free MIT-licensed developer tools.</strong> Want the bundle with DevFlow Premium (multi-env CI, approval gates, infra-as-code)? <a href="https://kryptorious.gumroad.com/l/jbvet">Get it — $9 lifetime →</a></div>
+<p style="margin-top:2rem"><a href="../blog/">← Back to Kryptorious Tools Blog</a></p>
+</body>
+</html>
