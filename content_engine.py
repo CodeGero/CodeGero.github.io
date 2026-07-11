@@ -10,7 +10,7 @@ Run: python content_engine.py   -> writes ONE new post, registers it, prints pat
 import json, subprocess, datetime, re, os, sys
 
 BLOG = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(BLOG)
+ROOT = BLOG  # sitemap.xml lives in landing/, same dir as this script
 
 def curl_json(url, timeout=20):
     try:
@@ -132,16 +132,16 @@ def register(slug, title, date):
 def main():
     date = datetime.date.today().isoformat()
     for t in TOPICS:
-        if post_exists(t["slug"]):
-            continue
-        # verify every required fact live
-        ok = all(fn(name) for name, fn in t["facts"])
-        if not ok:
-            print(f"SKIP {t['slug']}: fact verification failed")
-            continue
-        path = write_post(t)
+        if not post_exists(t["slug"]):
+            # verify every required fact live before writing
+            ok = all(fn(name) for name, fn in t["facts"])
+            if not ok:
+                print(f"SKIP {t['slug']}: fact verification failed")
+                continue
+            write_post(t)
+        # register is idempotent (no-op if already in index/sitemap)
         registered = register(t["slug"], t["title"], date)
-        print(f"PUBLISHED {t['slug']} -> {path} (registered={registered})")
+        print(f"PUBLISHED {t['slug']} (registered={registered})")
         return 0
     print("NOTHING TO PUBLISH (all topics done or unverifiable)")
     return 0

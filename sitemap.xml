@@ -14,4 +14,5 @@
   <url><loc>https://codegero.github.io/blog/openapi-breaking-change-detection-ci.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://codegero.github.io/store/</loc><changefreq>weekly</changefreq></url>
   <url><loc>https://codegero.github.io/blog/reproducible-python-builds.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://codegero.github.io/blog/pin-dependencies-or-break-in-production.html</loc><changefreq>monthly</changefreq></url>
 </urlset>
