@@ -52,7 +52,7 @@ TOPICS = [
         "slug": "secrets-dont-belong-in-git-history",
         "title": "Secrets Don't Belong in Git History: The 30-Second Leak Check",
         "blurb": "One committed .env turns into a supply-chain incident the moment it hits a public mirror. The detection workflow that catches it before push.",
-        "facts": [("gitleaks", pypi_exists), ("trufflehog", pypi_exists)],
+        "facts": [("gitleaks", lambda _: gh_repo_exists("gitleaks", "gitleaks")), ("trufflehog", lambda _: pypi_exists("trufflehog") or gh_repo_exists("trufflesecurity", "trufflehog"))],
         "body": """<p>A committed <code>.env</code> does not stay private. The moment a repo is cloned, forked, or mirrored, the credential is loose. The fix is not "be careful" — it is automated detection that refuses the commit.</p>
 <h2>The mechanism</h2>
 <p>Secret scanners use entropy and pattern matching (AWS keys, Stripe test/live tokens, private keys) over diffs and history. They run as a pre-commit hook and as a CI gate, so a leak is caught locally before it ever reaches a remote.</p>
