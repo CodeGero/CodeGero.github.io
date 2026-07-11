@@ -2,19 +2,19 @@
 """Kryptorious crypto store — CLI.
 
 Usage:
-  python store.py catalog
-  python store.py order <product_id> <btc|ltc> <merchant_address>
-  python store.py check <order_id> <merchant_address>
-  python store.py fulfill <order_id>
+  python store.py catalog          # list products
+  python store.py slots            # show order slots + paid status
+  python store.py poll             # verify all slots, fulfill any paid
+  python store.py check <address>  # verify one slot by address
 
-The merchant_address is a plain crypto address string — no account, no KYC.
+Per-order unique BTC addresses are derived from MERCHANT_XPUB.txt (watch-only).
+The private key is never touched by this CLI.
 """
 from __future__ import annotations
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from engine import (CATALOG, create_order, live_prices, load_order,
-                    verify_payment, fulfill, usd_to_coin)
+from engine import CATALOG, load_catalog, verify_payment, mark_fulfilled, get_slot
 
 
 def main(argv):
@@ -27,49 +27,40 @@ def main(argv):
             print(f"  {pid:18} ${usd:.2f}  [{ftype}]  {name}")
         return 0
 
-    if cmd == "order":
-        if len(argv) < 5:
-            print("usage: store.py order <product_id> <btc|ltc> <address>"); return 1
-        pid, coin, addr = argv[2], argv[3].lower(), argv[4]
-        try:
-            prices = live_prices()
-        except Exception as e:
-            print("price fetch failed:", e); return 1
-        o = create_order(pid, coin, prices)
-        print(f"\n  ORDER {o['order_id']}")
-        print(f"  Product : {o['product']}")
-        print(f"  Pay     : {o['amount']:.8f} {coin.upper()}  (~${o['usd']:.2f})")
-        print(f"  To      : {addr}")
-        print(f"  Check   : python store.py check {o['order_id']} {addr}")
+    if cmd == "slots":
+        cat = load_catalog()
+        paid = sum(1 for s in cat if s.get("fulfilled"))
+        print(f"  {len(cat)} slots, {paid} fulfilled")
+        for s in cat[:5]:
+            print(f"  [{s['slot']}] {s['product_id']:14} {s['amount']:.8f} -> {s['address'][:14]}… paid={s.get('paid')}")
+        return 0
+
+    if cmd == "poll":
+        cat = load_catalog()
+        done = 0
+        for s in cat:
+            if s.get("fulfilled"):
+                continue
+            if verify_payment(s):
+                s = mark_fulfilled(s)
+                done += 1
+                print(f"  FULFILLED slot {s['slot']} ({s['product_id']}) -> {s.get('key') or s.get('download')}")
+        if done == 0:
+            print("  POLLED - no new payments.")
         return 0
 
     if cmd == "check":
-        if len(argv) < 4:
-            print("usage: store.py check <order_id> <address>"); return 1
-        oid, addr = argv[2], argv[3]
-        o = load_order(oid)
-        if not o:
-            print("unknown order"); return 1
-        paid = verify_payment(o, addr)
-        print(f"  Order {oid}: required {o['amount']:.8f} {o['coin'].upper()}")
-        print(f"  Payment detected: {'YES' if paid else 'not yet'}")
-        if paid and not o.get("fulfilled"):
-            o = fulfill(o)
-        if o.get("fulfilled"):
-            if o.get("key"):
-                print(f"  LICENSE KEY: {o['key']}")
-            if o.get("download"):
-                print(f"  DOWNLOAD   : {o['download']}")
-        return 0
-
-    if cmd == "fulfill":
         if len(argv) < 3:
-            print("usage: store.py fulfill <order_id>"); return 1
-        o = load_order(argv[2])
-        if not o:
-            print("unknown order"); return 1
-        o = fulfill(o)
-        print("fulfilled:", o.get("key") or o.get("download"))
+            print("usage: store.py check <address>"); return 1
+        s = get_slot(argv[2])
+        if not s:
+            print("unknown address"); return 1
+        paid = verify_payment(s)
+        print(f"  slot {s['slot']} {s['product_id']}: required {s['amount']:.8f} BTC")
+        print(f"  payment detected: {'YES' if paid else 'not yet'}")
+        if paid and not s.get("fulfilled"):
+            s = mark_fulfilled(s)
+            print(f"  delivered: {s.get('key') or s.get('download')}")
         return 0
 
     print(__doc__)

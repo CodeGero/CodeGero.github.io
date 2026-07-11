@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Autonomous crypto-store fulfillment poller.
+"""Autonomous crypto-store fulfillment poller (run on a schedule).
 
-Looks for unpaid orders in store/engine/orders/, checks each merchant BTC
-address for received funds via public explorer, and auto-fulfills (mints a
-real DevFlow license key or reveals the download link) when payment is seen.
+Reads store/orders_catalog.json, verifies each slot's OWN unique BTC address
+via public explorers, and fulfills (mints a DevFlow key or reveals a download)
+when payment is seen. Per-order addresses mean one payment can never unlock
+another order.
 
-Requires: store/MERCHANT_BTC.txt containing ONE line = the merchant BTC address.
-If the file is missing/empty, the poller prints a clear instruction and exits
-(so it is safe to run on a schedule before the address is set).
-
-Run from the landing repo root (workdir) so relative paths resolve.
+Requires: store/MERCHANT_XPUB.txt = watch-only zpub (public-safe).
+If missing/empty, prints a clear instruction and exits (safe no-op).
 """
 from __future__ import annotations
 import os
@@ -19,50 +17,37 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 try:
-    from engine import load_order, verify_payment, fulfill, ORDERS_DIR
+    from engine import load_catalog, verify_payment, mark_fulfilled
 except Exception as e:
     print("import failed:", e); sys.exit(0)
 
-MERCHANT_FILE = os.path.join(os.path.dirname(HERE), "MERCHANT_BTC.txt")
+XPUB_FILE = os.path.join(os.path.dirname(HERE), "MERCHANT_XPUB.txt")
 
 
 def main():
-    if not os.path.exists(MERCHANT_FILE):
-        print("NO_MERCHANT_ADDRESS: create store/MERCHANT_BTC.txt with your BTC address.")
-        return
-    addr = open(MERCHANT_FILE).read().strip()
-    if not addr:
-        print("NO_MERCHANT_ADDRESS: store/MERCHANT_BTC.txt is empty.")
+    if not os.path.exists(XPUB_FILE) or not open(XPUB_FILE).read().strip():
+        print("NO_XPUB: create store/MERCHANT_XPUB.txt with your watch-only zpub.")
         return
 
-    pending = []
-    if os.path.isdir(ORDERS_DIR):
-        for fn in os.listdir(ORDERS_DIR):
-            if not fn.endswith(".json"):
-                continue
-            o = load_order(fn[:-5])
-            if o and not o.get("fulfilled"):
-                pending.append(o)
-
-    if not pending:
-        print("NO_PENDING_ORDERS")
+    cat = load_catalog()
+    if not cat:
+        print("NO_CATALOG: run gen_addresses.py first.")
         return
 
     fulfilled = 0
-    for o in pending:
+    for s in cat:
+        if s.get("fulfilled"):
+            continue
         try:
-            if verify_payment(o, addr):
-                o = fulfill(o)
+            if verify_payment(s):
+                s = mark_fulfilled(s)
                 fulfilled += 1
-                if o.get("key"):
-                    print(f"FULFILLED {o['order_id']} -> KEY {o['key']}")
-                elif o.get("download"):
-                    print(f"FULFILLED {o['order_id']} -> DOWNLOAD {o['download']}")
+                print(f"FULFILLED slot {s['slot']} ({s['product_id']}) -> {s.get('key') or s.get('download')}")
         except Exception as e:
-            print(f"CHECK_ERROR {o.get('order_id')}: {e}")
+            print(f"CHECK_ERROR slot {s['slot']}: {e}")
 
     if fulfilled == 0:
-        print("POLLED", len(pending), "pending orders — none paid yet.")
+        print("POLLED", len(cat), "slots - none paid yet.")
 
 
 if __name__ == "__main__":

@@ -1,12 +1,12 @@
-"""Crypto-commerce engine for Kryptorious — sells DevFlow Premium & art packs for BTC/LTC.
+"""Crypto-commerce engine for Kryptorious — sells products for BTC.
 
-No account, no KYC, no domain. The only external input is a wallet ADDRESS
-(a string). Payment is verified against public block explorers; fulfillment
-mints a real, self-validating DevFlow Premium license key (CRC32-checksummed
-KRYP-XXXX-XXXX-XXXX-XXXX, same algorithm devflow uses offline) or reveals a
-download link.
+No account, no KYC, no domain. Single source of truth: orders_catalog.json
+(a committed pool of per-order UNIQUE BTC addresses derived from the watch-only
+MERCHANT_XPUB.txt). The storefront serves slots; the fulfillment poller verifies
+each slot's OWN address. One payment can never unlock another order.
 
-This module never holds secrets. The merchant address is supplied at runtime.
+The merchant's private key lives ONLY in the operator's local wallet file and is
+never read by this engine.
 """
 from __future__ import annotations
 
@@ -16,17 +16,13 @@ import json
 import os
 import time
 import urllib.request
-import urllib.error
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ORDERS_DIR = os.path.join(HERE, "orders")
-os.makedirs(ORDERS_DIR, exist_ok=True)
+CATALOG_FILE = os.path.join(os.path.dirname(HERE), "orders_catalog.json")
 
-CG_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,litecoin&vs_currencies=usd"
-# Blockchain.com explorer API (no key). Known-stable public endpoint.
-EXPLORER_API = "https://blockchain.info/q/addressreceivetotal/{addr}"
-# Backup: Blockstream Esplora (also no key), used if blockchain.info fails.
-ESPLORA_API = "https://blockstream.info/api/address/{addr}"
+XPUB_FILE = os.path.join(os.path.dirname(HERE), "MERCHANT_XPUB.txt")
+
+CG_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
 
 # Catalog: product id -> (display name, price USD, fulfillment type)
 CATALOG = {
@@ -35,31 +31,46 @@ CATALOG = {
     "btc-ebook": ("Sell Anything for Bitcoin — Account-Free Commerce eBook (PDF)", 5.00, "download-ebook"),
 }
 
-# We accept BTC only. Every LTC explorer tested from this host is blocked
-# (HTTP 430/403), so we will not advertise a rail we cannot verify.
 COIN = "bitcoin"
 
+_PRICE_CACHE = {"ts": 0, "usd": None}
+_PRICE_MAX_AGE = 900
+
 
 # --------------------------------------------------------------------------
-# Pricing
+# Pricing (hardened: never crash on network failure)
 # --------------------------------------------------------------------------
 def live_prices() -> dict:
-    """Return {'bitcoin': usd, 'litecoin': usd} from CoinGecko. Raises on failure."""
-    with urllib.request.urlopen(CG_URL, timeout=20) as r:
-        data = json.loads(r.read().decode())
-    return {"bitcoin": float(data["bitcoin"]["usd"]),
-            "litecoin": float(data["litecoin"]["usd"])}
+    try:
+        with urllib.request.urlopen(CG_URL, timeout=20) as r:
+            data = json.loads(r.read().decode())
+        usd = float(data["bitcoin"]["usd"])
+        _PRICE_CACHE["ts"] = time.time()
+        _PRICE_CACHE["usd"] = usd
+        return {"bitcoin": usd}
+    except Exception:
+        if _PRICE_CACHE["usd"] is not None:
+            return {"bitcoin": _PRICE_CACHE["usd"]}
+        raise RuntimeError("CoinGecko unreachable and no cached price available")
 
 
-def usd_to_coin(amount_usd: float, coin: str, prices: dict) -> float:
-    """Convert USD to a coin amount with 8-decimal precision.
+def usd_to_coin(amount_usd: float, prices: dict) -> float:
+    return round(amount_usd / prices[COIN], 8)
 
-    prices keys are CoinGecko ids: 'bitcoin', 'litecoin' (we use BTC only).
-    """
-    key = "bitcoin" if coin in ("btc", "bitcoin") else "litecoin"
-    rate = prices[key]
-    amt = amount_usd / rate
-    return round(amt, 8)
+
+# --------------------------------------------------------------------------
+# Per-order receive address (watch-only derivation from MERCHANT_XPUB.txt)
+# --------------------------------------------------------------------------
+def _load_xpub() -> str:
+    if not os.path.exists(XPUB_FILE):
+        raise RuntimeError("MERCHANT_XPUB.txt missing - put your watch-only zpub there.")
+    return open(XPUB_FILE).read().strip()
+
+
+def derive_order_address(order_index: int) -> str:
+    from bitcoinlib.keys import HDKey
+    watch = HDKey.from_wif(_load_xpub(), network="bitcoin")
+    return watch.subkey_for_path(f"m/0/{order_index}").address()
 
 
 # --------------------------------------------------------------------------
@@ -84,51 +95,50 @@ def _checksum(groups: list[str]) -> str:
 
 
 def mint_key(seed: str) -> str:
-    """Mint a valid KRYP-XXXX-XXXX-XXXX-XXXX key deterministically from a seed.
-
-    Deterministic so re-fulfilling the same order yields the same key.
-    """
     h = hashlib.sha256(seed.encode()).hexdigest().upper()
-    g = [h[i:i + 4] for i in range(0, 12, 4)]  # 3 groups of 4 hex
+    g = [h[i:i + 4] for i in range(0, 12, 4)]
     return "KRYP-" + "-".join(g) + "-" + _checksum(g)
 
 
 # --------------------------------------------------------------------------
-# Order persistence
+# Order catalog (single source of truth)
 # --------------------------------------------------------------------------
-def create_order(product_id: str, coin: str, prices: dict) -> dict:
-    if product_id not in CATALOG:
-        raise ValueError(f"unknown product {product_id}")
-    name, usd, ftype = CATALOG[product_id]
-    amount = usd_to_coin(usd, coin, prices)
-    order_id = hashlib.sha256(f"{product_id}{coin}{time.time()}".encode()).hexdigest()[:12]
-    order = {
-        "order_id": order_id,
-        "product_id": product_id,
-        "product": name,
-        "coin": coin,
-        "amount": amount,
-        "usd": usd,
-        "fulfillment": ftype,
-        "created": int(time.time()),
-        "paid": False,
-        "fulfilled": False,
-    }
-    _save(order)
-    return order
-
-
-def _save(order: dict) -> None:
-    with open(os.path.join(ORDERS_DIR, order["order_id"] + ".json"), "w") as f:
-        json.dump(order, f, indent=2)
-
-
-def load_order(order_id: str) -> dict | None:
-    p = os.path.join(ORDERS_DIR, order_id + ".json")
-    if not os.path.exists(p):
-        return None
-    with open(p) as f:
+def load_catalog() -> list:
+    if not os.path.exists(CATALOG_FILE):
+        return []
+    with open(CATALOG_FILE) as f:
         return json.load(f)
+
+
+def _save_catalog(cat: list) -> None:
+    with open(CATALOG_FILE, "w") as f:
+        json.dump(cat, f, indent=2)
+
+
+def get_slot(address: str) -> dict | None:
+    for s in load_catalog():
+        if s["address"] == address:
+            return s
+    return None
+
+
+def mark_fulfilled(slot: dict) -> dict:
+    if slot["fulfillment"] == "key":
+        slot["key"] = mint_key(slot["address"] + ":" + slot["product_id"])
+    elif slot["fulfillment"] == "download":
+        slot["download"] = "https://codegero.github.io/store/art-pack.zip"
+    elif slot["fulfillment"] == "download-ebook":
+        slot["download"] = "https://codegero.github.io/store/btc-commerce-ebook.pdf"
+    slot["paid"] = True
+    slot["fulfilled"] = True
+    # persist
+    cat = load_catalog()
+    for i, s in enumerate(cat):
+        if s["address"] == slot["address"]:
+            cat[i] = slot
+            break
+    _save_catalog(cat)
+    return slot
 
 
 # --------------------------------------------------------------------------
@@ -136,17 +146,10 @@ def load_order(order_id: str) -> dict | None:
 # --------------------------------------------------------------------------
 def _fetch_json(url: str) -> dict:
     req = urllib.request.Request(url, headers={"User-Agent": "kryptorious-store/1.0"})
-    with urllib.request.urlopen(req, timeout=25) as r:
+    with urllib.request.urlopen(req, timeout=8) as r:
         return json.loads(r.read().decode())
 
 
-def _fetch_text(url: str) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "kryptorious-store/1.0"})
-    with urllib.request.urlopen(req, timeout=25) as r:
-        return r.read().decode().strip()
-
-
-# Public, keyless BTC explorers. First working wins.
 _EXPLORERS = {
     "bitcoin": [
         lambda a: _fetch_json(f"https://mempool.space/api/address/{a}")["chain_stats"]["funded_txo_sum"],
@@ -155,41 +158,17 @@ _EXPLORERS = {
 }
 
 
-def received_total(addr: str, coin: str = "bitcoin") -> int:
-    """Total satoshis ever received by addr, via public explorers (no API key).
-
-    Returns int satoshis. Falls back across explorers per coin.
-    """
+def received_total(addr: str, coin: str = COIN) -> int:
     for fn in _EXPLORERS.get(coin, []):
         try:
-            val = int(fn(addr))
-            return val
+            return int(fn(addr))
         except Exception:
             continue
     return 0
 
 
-def verify_payment(order: dict, addr: str) -> bool:
-    """Return True if addr has received >= order amount (in satoshis)."""
-    coin = order["coin"]
-    req_sat = int(round(order["amount"] * 1e8))
-    got = received_total(addr, coin)
+def verify_payment(slot: dict) -> bool:
+    """True only if THIS slot's own address received >= its exact amount."""
+    req_sat = int(round(slot["amount"] * 1e8))
+    got = received_total(slot["address"], COIN)
     return got >= req_sat
-
-
-# --------------------------------------------------------------------------
-# Fulfillment
-# --------------------------------------------------------------------------
-def fulfill(order: dict) -> dict:
-    """Mark order paid+fulfilled and produce the deliverable."""
-    if order["fulfillment"] == "key":
-        key = mint_key(order["order_id"] + ":" + order["product_id"])
-        order["key"] = key
-    elif order["fulfillment"] == "download":
-        order["download"] = "https://codegero.github.io/store/art-pack.zip"
-    elif order["fulfillment"] == "download-ebook":
-        order["download"] = "https://codegero.github.io/store/btc-commerce-ebook.pdf"
-    order["paid"] = True
-    order["fulfilled"] = True
-    _save(order)
-    return order

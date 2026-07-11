@@ -73,17 +73,31 @@ async function loadPrices(){
     document.getElementById('p-ebook').textContent = (PRICES["btc-ebook"]/btc).toFixed(8);
   }catch(e){ /* prices shown as … if offline */ }
 }
-let MERCHANT_ADDR = "bc1q8j8d3s9jna9qxk8p6q8lvd35y5myel0l2a7yjf";
-// Refresh the merchant address from the live file (agent updates it on activation).
-fetch("MERCHANT_BTC.txt?ts=" + Date.now()).then(r=>r.text()).then(t=>{
-  const a = t.trim(); if(a.startsWith("bc1")||a.startsWith("1")||a.startsWith("3")) MERCHANT_ADDR = a;
-}).catch(()=>{});
-function buy(pid){
-  // Surface the exact order command for the agent to fulfill, with the live address.
-  alert("Run on the agent host:\n\npython store.py order " + pid + " btc " + MERCHANT_ADDR + "\n\nThen share the returned BTC amount + address with the buyer.\n\nMerchant address: " + MERCHANT_ADDR);
+// Buyer claims a unique, pre-generated order slot for this product.
+async function buy(pid){
+  let cat;
+  try { cat = await (await fetch("orders_catalog.json?ts="+Date.now())).json(); }
+  catch(e){ alert("Could not load order slots. Try again in a moment."); return; }
+  const claimed = JSON.parse(localStorage.getItem("claimed")||"[]");
+  const slot = cat.find(s => s.product_id===pid && !s.fulfilled && !claimed.includes(s.slot));
+  if(!slot){ alert("No order slots available for this product right now. Contact support."); return; }
+  claimed.push(slot.slot);
+  localStorage.setItem("claimed", JSON.stringify(claimed));
+  const msg =
+    "Send EXACTLY this amount to this UNIQUE address:\\n\\n" +
+    "Amount: " + slot.amount.toFixed(8) + " BTC  (~$" + slot.usd.toFixed(2) + ")\\n" +
+    "Address: " + slot.address + "\\n\\n" +
+    "After sending, your license key / download appears automatically once the network confirms it.\\n" +
+    "(Save this address — it is yours for this order.)";
+  // Render inline so it's copyable, not just an alert.
+  const box = document.getElementById("order-box");
+  box.style.display = "block";
+  box.innerHTML = "<b>Send " + slot.amount.toFixed(8) + " BTC to:</b><br><code style='font-size:1rem;word-break:break-all'>" + slot.address + "</code>";
+  alert(msg);
 }
 loadPrices();
 setInterval(loadPrices, 60000);
 </script>
+<div id="order-box" style="display:none;margin-top:1rem;background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:1rem"></div>
 </body>
 </html>
