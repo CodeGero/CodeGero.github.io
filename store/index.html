@@ -41,6 +41,13 @@ footer{color:var(--mut);font-size:.8rem;margin-top:2.5rem;text-align:center}
     <button class="buy" onclick="buy('art-pack')">Buy with BTC</button>
   </div>
 
+  <div class="product">
+    <h2>Sell Anything for Bitcoin — Account-Free Commerce eBook</h2>
+    <p>A 6-chapter field guide to receiving BTC for digital products with no domain, no KYC, and no middleman. Documents the exact system this store runs on. Instant PDF download.</p>
+    <p class="price">$5.00 USD &nbsp;·&nbsp; <span id="p-ebook">…</span> BTC</p>
+    <button class="buy" onclick="buy('btc-ebook')">Buy with BTC</button>
+  </div>
+
   <div class="how">
     <h3>How it works</h3>
     <ol>
@@ -56,13 +63,14 @@ footer{color:var(--mut);font-size:.8rem;margin-top:2.5rem;text-align:center}
 </div>
 
 <script>
-const PRICES = { "devflow-premium": 9.00, "art-pack": 7.00 };
+const PRICES = { "devflow-premium": 9.00, "art-pack": 7.00, "btc-ebook": 5.00 };
 async function loadPrices(){
   try{
     const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
     const d = await r.json(); const btc = d.bitcoin.usd;
     document.getElementById('p-df').textContent = (PRICES["devflow-premium"]/btc).toFixed(8);
     document.getElementById('p-art').textContent = (PRICES["art-pack"]/btc).toFixed(8);
+    document.getElementById('p-ebook').textContent = (PRICES["btc-ebook"]/btc).toFixed(8);
   }catch(e){ /* prices shown as … if offline */ }
 }
 let MERCHANT_ADDR = "bc1q8j8d3s9jna9qxk8p6q8lvd35y5myel0l2a7yjf";

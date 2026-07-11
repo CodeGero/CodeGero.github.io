@@ -32,6 +32,7 @@ ESPLORA_API = "https://blockstream.info/api/address/{addr}"
 CATALOG = {
     "devflow-premium": ("DevFlow Premium License (lifetime)", 9.00, "key"),
     "art-pack": ("Serene Gradient Wall Art — 4-Poster Pack", 7.00, "download"),
+    "btc-ebook": ("Sell Anything for Bitcoin — Account-Free Commerce eBook (PDF)", 5.00, "download-ebook"),
 }
 
 # We accept BTC only. Every LTC explorer tested from this host is blocked
@@ -186,6 +187,8 @@ def fulfill(order: dict) -> dict:
         order["key"] = key
     elif order["fulfillment"] == "download":
         order["download"] = "https://codegero.github.io/store/art-pack.zip"
+    elif order["fulfillment"] == "download-ebook":
+        order["download"] = "https://codegero.github.io/store/btc-commerce-ebook.pdf"
     order["paid"] = True
     order["fulfilled"] = True
     _save(order)
