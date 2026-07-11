@@ -13,7 +13,7 @@
   <url><loc>https://codegero.github.io/blog/github-actions-cicd-pipeline.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://codegero.github.io/blog/openapi-breaking-change-detection-ci.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://codegero.github.io/store/</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://codegero.github.io/blog/pin-dependencies-or-break-in-production.html</loc><changefreq>monthly</changefreq></url>
+
   <url><loc>https://codegero.github.io/blog/cheapest-ci-gate-that-catches-real-breakage.html</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://codegero.github.io/blog/secrets-dont-belong-in-git-history.html</loc><changefreq>monthly</changefreq></url>
 </urlset>
