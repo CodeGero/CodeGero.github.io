@@ -18,4 +18,5 @@
 
   <url><loc>https://codegero.github.io/blog/cheapest-ci-gate-that-catches-real-breakage.html</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://codegero.github.io/blog/secrets-dont-belong-in-git-history.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://codegero.github.io/blog/uv-vs-pip-benchmark.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

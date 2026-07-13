@@ -5,8 +5,15 @@
     <link>https://codegero.github.io/blog/</link>
     <description>Developer workflow automation guides, tutorials, and best practices for Python, GitHub Actions, CI/CD, package metadata, and secrets security.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://codegero.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>I Timed uv Against pip on a Clean Windows CI Box — Here's What's Actually Faster</title>
+    <link>https://codegero.github.io/blog/uv-vs-pip-benchmark.html</link>
+    <guid>https://codegero.github.io/blog/uv-vs-pip-benchmark.html</guid>
+    <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+    <description>Same interpreter, same package, real wall-clock numbers: uv vs pip on a clean Windows host — plus the caveats nobody mentions.</description>
+  </item>
     <item>
       <title>The 11 Python Developer Tools That Actually Save Time in 2026</title>
       <link>https://codegero.github.io/blog/best-python-developer-tools-2026.html</link>
