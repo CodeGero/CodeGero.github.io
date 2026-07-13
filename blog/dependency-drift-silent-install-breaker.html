@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dependency Drift: The Silent Install-Breaker</title>
+<meta name="description" content="Undeclared imports, unused deps, unpinned specifiers, and lockfile drift break clean installs before you ever ship. Here is the offline, CI-ready way to catch them.">
+<link rel="canonical" href="https://codegero.github.io/blog/dependency-drift-silent-install-breaker.html">
+<style>body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:720px;margin:0 auto;padding:2rem}h1{color:#58a6ff;line-height:1.2}a{color:#58a6ff}code{background:#161b22;padding:.15rem .4rem;border-radius:4px;font-size:.9em}pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;overflow:auto}pre code{background:none;padding:0}.cta{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem 1.25rem;margin:1.5rem 0}.cta a{font-weight:600}</style>
+</head>
+<body>
+<h1>Dependency Drift: The Silent Install-Breaker</h1>
+<p style="color:#8b949e">July 13, 2026 · Kryptorious Tools</p>
+<p>Your code imports a package. Your <code>requirements.txt</code> never declared it. On your machine it works — because the package is already in the environment from something else. Then a teammate runs a clean <code>pip install -r requirements.txt</code> and the build dies on <code>ModuleNotFoundError</code>. Nobody changed anything. The bug was there the whole time; the dirty environment just hid it.</p>
+<p>That is dependency drift: the gap between what your project <em>declares</em> and what it <em>actually uses</em>. It is silent because a contaminated local environment passes every check until a clean install exposes it.</p>
+<h2>The four ways dependencies drift</h2>
+<p>The cross-ecosystem auditor <a href="https://pypi.org/project/kryptorious-depguard/">kryptorious-depguard</a> (verified live on PyPI, HTTP 200 — v1.1.1, MIT, requires Python &gt;=3.10, Beta) catches four classes your linter can't see:</p>
+<ul>
+<li><strong>Undeclared imports</strong> — code does <code>import requests</code> with no <code>requests</code> in <code>requirements.txt</code>. Breaks in a clean install.</li>
+<li><strong>Unused dependencies</strong> — declared in <code>requirements.txt</code> / <code>package.json</code> but never imported. Bloats installs and attack surface.</li>
+<li><strong>Unpinned specifiers</strong> — <code>numpy</code> (any) or <code>^1.2.3</code> (floating). Non-reproducible builds; the same input yields different outputs depending on the clock.</li>
+<li><strong>Lockfile drift</strong> — <code>package.json</code> disagrees with <code>package-lock.json</code> / <code>yarn.lock</code>.</li>
+</ul>
+<h2>One offline command, CI-ready</h2>
+<p>It is offline and emits SARIF for GitHub code-scanning in one pass. Audit the current directory (both Python and Node):</p>
+<pre><code>pip install kryptorious-depguard
+depguard check .</code></pre>
+<p>The CI gate is controlled by <code>--fail-on {high,medium,low,never}</code>. Default is <code>high</code>: it exits <code>1</code> when any high-severity finding exists (undeclared imports). Python-only, with a stricter failure bar:</p>
+<pre><code>depguard check . --python --no-node --fail-on high</code></pre>
+<h2>Drop it into GitHub Actions</h2>
+<p>The package's documented inline Action installs the tool, runs the audit as SARIF, and uploads the result to code-scanning:</p>
+<pre><code>- name: Dependency audit
+  run: |
+    pip install kryptorious-depguard
+    depguard check . --format sarif --output depguard.sarif --fail-on high
+- name: Upload SARIF
+  uses: github/codeql-action/upload-sarif@v3
+  with:
+    sarif_file: depguard.sarif</code></pre>
+<p>A green run means: no undeclared imports, no lockfile drift, no floating specifiers that would have broken the next clean install. The audit runs offline, so it fails closed on network trouble rather than skipping silently.</p>
+<div class="cta">🛠️ <strong>kryptorious-depguard is free and MIT-licensed.</strong> Want the Premium tier — cloud SARIF dashboards, scheduled baseline diffs, and HTML trend reports? <a href="https://kryptorious.gumroad.com/l/jbvet">Get it here →</a></div>
+<p style="margin-top:2rem"><a href="../blog/">← Back to Kryptorious Tools Blog</a></p>
+
+<div style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #30363d">
+  <p style="color:#8b949e;font-size:.85rem">Keep reading:</p>
+  <ul style="list-style:none;padding:0;margin:0">
+    <li style="margin:.4rem 0"><a href="https://codegero.github.io/learn/" style="color:#58a6ff">Learn to Build AI Agents — Free Tutorials</a></li>
+    <li style="margin:.4rem 0"><a href="../blog/python-package-version-drift.html" style="color:#58a6ff">How to Catch Python Package Version Drift Before You Ship</a></li>
+    <li style="margin:.4rem 0"><a href="../blog/pin-dependencies-or-break-in-production.html" style="color:#58a6ff">Pin Dependencies or Break in Production: The Hash-Pinning Standard</a></li>
+  </ul>
+</div>
+<p style="margin-top:1.5rem"><a href="../blog/" style="color:#58a6ff">← All posts</a></p>
+</body>
+</html>
