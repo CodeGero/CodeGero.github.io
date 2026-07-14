@@ -54,6 +54,14 @@ Catch version drift, stale changelogs, missing license files, and leaked secrets
 pip install kryptorious-metaguard
 ```
 
+### 🚀 Packaging Gate
+Build the wheel and actually import + run every declared entry point before you publish — catch `ImportError` and broken CLIs that `twine check` misses.
+
+```bash
+pip install kryptorious-pkgcheck
+pkgcheck check .
+```
+
 ### 🧪 Test Generator
 Auto-generate pytest tests from Python source.
 
@@ -63,7 +71,7 @@ pip install kryptorious-testforge
 
 ### 📚 All 32 Tools Included
 
-**PyPI (12):** DevFlow, GitSweep, DataForge, EnvGuard, TestForge, CSVClean, JSONGuard, APIGuard, DraftGuard, MetaGuard, wfGuard
+**PyPI (12):** DevFlow, GitSweep, DataForge, EnvGuard, TestForge, CSVClean, JSONGuard, APIGuard, DraftGuard, MetaGuard, PkgCheck, wfGuard
 
 **GitHub Actions (15):** Python Guardian, Release Forge, PR Sentinel, Secret Scanner, Stale Bot, Docker Guardian, Spell Guardian, Merge Guardian, ML Guardian, Dependency Bot, AI Code Lint, Coverage Gate, Go Guardian, Rust Guardian, License Guardian, Dependency Auditor
 
