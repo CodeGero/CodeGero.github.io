@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kryptorious Store — Pay with Bitcoin, No Account</title>
-<meta name="description" content="Buy DevFlow Premium, gradient wall art, and the Account-Free Bitcoin Commerce eBook with BTC. No account, no KYC, instant delivery.">
-<meta name="keywords" content="buy with bitcoin, bitcoin store, crypto commerce, devflow premium, no kyc">
+<meta name="description" content="Buy DevFlow Premium and digital products with Bitcoin. No store account. Automatic delivery after blockchain confirmation.">
+<meta name="keywords" content="buy with bitcoin, bitcoin store, crypto commerce, devflow premium">
 <link rel="canonical" href="https://codegero.github.io/store/">
 <meta property="og:title" content="Kryptorious Store — Pay with Bitcoin">
-<meta property="og:description" content="Buy DevFlow Premium and digital products with Bitcoin. No account, no KYC, instant delivery.">
+<meta property="og:description" content="Buy DevFlow Premium and digital products with Bitcoin. Automatic delivery after blockchain confirmation.">
 <meta property="og:url" content="https://codegero.github.io/store/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kryptorious Store — Pay with Bitcoin">
-<meta name="twitter:description" content="Buy digital products with Bitcoin. No account, no KYC.">
+<meta name="twitter:description" content="Buy digital products with Bitcoin. No store account required.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Kryptorious Store","url":"https://codegero.github.io/store/","potentialAction":{"@type":"SearchAction","target":"https://codegero.github.io/store/","query-input":"required name=search_term"}}</script>
 <style>
 :root{--bg:#0d1117;--card:#161b22;--fg:#e6edf3;--mut:#8b949e;--acc:#f7931a;--green:#3fb950}
@@ -28,6 +28,9 @@ h1{font-size:2rem;margin-bottom:.2rem}
 .buy{display:inline-block;margin-top:1rem;background:var(--acc);color:#000;font-weight:700;padding:.6rem 1.1rem;border-radius:8px;text-decoration:none;cursor:pointer;border:none}
 .how{background:var(--card);border:1px solid #21262d;border-radius:12px;padding:1.4rem;margin-top:2rem;font-size:.95rem}
 .how code{background:#0d1117;padding:.15rem .4rem;border-radius:4px;color:var(--green)}
+#order-box{display:none;margin-top:1rem;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:1rem}
+#order-box p{margin:.35rem 0}.order-title{font-weight:700;color:var(--green)}.order-note{color:var(--mut);font-size:.9rem}.order-error{color:#f85149}
+.order-address,.license-key{display:block;margin:.75rem 0;padding:.7rem;background:#161b22;color:var(--green);word-break:break-all;border-radius:6px}
 ol{padding-left:1.2rem}
 footer{color:var(--mut);font-size:.8rem;margin-top:2.5rem;text-align:center}
 </style>
@@ -35,7 +38,8 @@ footer{color:var(--mut);font-size:.8rem;margin-top:2.5rem;text-align:center}
 <body>
 <div class="wrap">
   <h1>Kryptorious Store</h1>
-  <p class="sub">Pay with Bitcoin. No account. No KYC. Instant delivery.</p>
+  <p class="sub">Pay with Bitcoin. No store account. Automatic delivery after blockchain confirmation.</p>
+  <noscript><p class="order-error">JavaScript is required to reserve an order slot and retrieve delivery.</p></noscript>
 
   <div class="product">
     <h2>DevFlow Premium — Lifetime License</h2>
@@ -61,15 +65,16 @@ footer{color:var(--mut);font-size:.8rem;margin-top:2.5rem;text-align:center}
   <div class="how">
     <h3>How it works</h3>
     <ol>
-      <li>Click <b>Buy with BTC</b>. A unique order is created and you get a Bitcoin address + exact amount.</li>
+      <li>Click <b>Buy with BTC</b>. This browser reserves a pending order slot and shows its Bitcoin address + exact amount.</li>
       <li>Send the exact amount (or slightly more) from any wallet.</li>
       <li>We verify the payment on the public Bitcoin network (mempool.space).</li>
-      <li>Once confirmed, your license key (or download link) is revealed instantly.</li>
+      <li>Once confirmed, the fulfillment worker publishes your license key or download and this browser reveals it automatically.</li>
     </ol>
     <p style="color:var(--mut)">Why Bitcoin only? Every Litecoin explorer is blocked from our host. BTC verification is fully live and keyless. We never advertise a rail we can't honor.</p>
   </div>
 
-  <footer>Kryptorious Quantum Biosciences, Inc. · Prices update live from CoinGecko.</footer>
+  <div id="order-box" role="status" aria-live="polite"></div>
+  <footer>Kryptorious · Prices update live from CoinGecko.</footer>
 </div>
 
 <script>
@@ -83,31 +88,9 @@ async function loadPrices(){
     document.getElementById('p-ebook').textContent = (PRICES["btc-ebook"]/btc).toFixed(8);
   }catch(e){ /* prices shown as … if offline */ }
 }
-// Buyer claims a unique, pre-generated order slot for this product.
-async function buy(pid){
-  let cat;
-  try { cat = await (await fetch("orders_catalog.json?ts="+Date.now())).json(); }
-  catch(e){ alert("Could not load order slots. Try again in a moment."); return; }
-  const claimed = JSON.parse(localStorage.getItem("claimed")||"[]");
-  const slot = cat.find(s => s.product_id===pid && !s.fulfilled && !claimed.includes(s.slot));
-  if(!slot){ alert("No order slots available for this product right now. Contact support."); return; }
-  claimed.push(slot.slot);
-  localStorage.setItem("claimed", JSON.stringify(claimed));
-  const msg =
-    "Send EXACTLY this amount to this UNIQUE address:\\n\\n" +
-    "Amount: " + slot.amount.toFixed(8) + " BTC  (~$" + slot.usd.toFixed(2) + ")\\n" +
-    "Address: " + slot.address + "\\n\\n" +
-    "After sending, your license key / download appears automatically once the network confirms it.\\n" +
-    "(Save this address — it is yours for this order.)";
-  // Render inline so it's copyable, not just an alert.
-  const box = document.getElementById("order-box");
-  box.style.display = "block";
-  box.innerHTML = "<b>Send " + slot.amount.toFixed(8) + " BTC to:</b><br><code style='font-size:1rem;word-break:break-all'>" + slot.address + "</code>";
-  alert(msg);
-}
 loadPrices();
 setInterval(loadPrices, 60000);
 </script>
-<div id="order-box" style="display:none;margin-top:1rem;background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:1rem"></div>
+<script type="module" src="./checkout-app.mjs"></script>
 </body>
 </html>

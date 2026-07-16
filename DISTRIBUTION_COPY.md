@@ -1,85 +1,86 @@
-# Distribution Copy — Kryptorious Developer Tools ($9 lifetime)
+# Distribution copy — kryptorious-pipeguard (post these yourself; agent cannot use your social accounts)
 
-NOTE: All copy below is HONEST and matches what's actually shipped. Do NOT edit claims.
-Post these from YOUR accounts (Hermes can't post to HN/Product Hunt/Reddit — needs your login).
-The $9 product: https://kryptorious.gumroad.com/l/jbvet
-Landing: https://codegero.github.io/
+## Product
+**kryptorious-pipeguard** — a CI/CD pipeline security linter for GitHub Actions and GitLab CI.
+Catch the misconfigs that turn a CI runner into a supply-chain attack vector *before* they ship.
 
-═══════════════════════════════════════════════════════════
-VARIANT 1 — Hacker News (Show HN)
-═══════════════════════════════════════════════════════════
-Title: Show HN: 31 open-source developer CLI tools (MIT) + one $9 lifetime license for CI/CD gen
+- Detects `pull_request_target` + untrusted-checkout secret exfil (PRT-001)
+- Missing least-privilege `permissions` blocks (PERM-001)
+- Hardcoded AWS/generic secrets (SEC-001)
+- Unpinned action/image refs (IMG-001 / GL-IMG-001)
+- GitLab plaintext secrets in `variables` (GL-SEC-001)
+- Outputs table / `--json` / `--sarif` (GitHub code scanning)
+- CI exit-code gate: exits 1 on any error-severity finding
 
-Body:
-I built a set of 31 small, single-purpose developer tools — all MIT-licensed and free to use. They're split across:
-- 15 GitHub Actions (secret scanning, PR gating, release automation, lint/coverage gates, dependency audits)
-- 11 PyPI packages (CSV cleaning, JSON schema validation, env-file security, pytest generation, metadata hygiene, etc.)
-- 5 npm packages (logging, config sync, port checking, scaffolding)
+Install: `pip install kryptorious-pipeguard`
+GitHub: https://github.com/CodeGero/kryptorious-pipeguard
+PyPI: https://pypi.org/project/kryptorious-pipeguard/
 
-Everything is real and on PyPI/npm/GitHub — no waitlist, no signup.
+---
 
-The only paid thing is "DevFlow Premium" ($9 one-time, lifetime): it generates a multi-environment CI/CD workflow (staging auto-deploy, production manual approval gate), Dockerfile, docker-compose, and per-env Terraform stubs from one command. Everything else is free.
-
-Examples:
-  pip install kryptorious-csvclean && csvclean clean messy.csv clean.csv --normalize
-  pip install kryptorious-envguard && envguard check --path . --strict   # fails CI on weak secrets
-  pip install kryptorious-jsonguard && jsonguard check data.json --schema schema.json
-
-Why: I kept rewriting the same boilerplate (env checks, CSV fixes, test stubs, release scripts) across projects, so I packaged them. Happy to take feedback on what's missing or broken.
-
-Repo/landing: https://codegero.github.io/
-
-═══════════════════════════════════════════════════════════
-VARIANT 2 — r/Python (self-promo allowed in weekly threads / r/PythonPackages)
-═══════════════════════════════════════════════════════════
-Title: I packaged my recurring Python boilerplate into 11 free MIT CLI tools (csvclean, envguard, jsonguard, testforge…)
+## Hacker News (show mode)
+Title: Show HN: pipeguard – a CI/CD security linter for GitHub Actions and GitLab CI
 
 Body:
-Every project I start needs the same glue: validate .env files, clean messy CSVs, check JSON against a schema, generate pytest stubs, audit package metadata. So I turned them into small CLIs:
+I kept seeing CI pipelines that hand broad token scope to `pull_request_target`
+workflows or check out attacker-controlled PR refs. One misconfig and a fork PR
+exfiltrates your secrets. So I wrote a small linter that scans `.github/workflows`
+and `.gitlab-ci.yml` for exactly that class of bug.
 
-- csvclean — detect encoding/delimiter/duplicate issues, clean CSVs
-- envguard — audit .env for placeholder secrets, --strict fails CI
-- jsonguard — validate JSON + real JSON Schema checking
-- testforge — generate pytest tests from source
-- dataforge — convert/merge JSON/YAML/TOML/CSV/XML
-- metaguard — catch version drift, missing LICENSE, committed secrets
-- gitsweep — find stale branches / large files
-- apiguard — OpenAPI breaking-change detection
-- draftguard — env config drift across dev/staging/prod
-- depguard — cross-ecosystem (py+node) dependency audit
-- devflow — scaffold/audit/fix/ship + CI/CD generation (Premium feature)
+It flags:
+- pull_request_target + checkout of pull_request.head.ref (secret-exfil path)
+- missing permissions block (broad default GITHUB_TOKEN scope)
+- hardcoded AWS/generic secrets
+- unpinned action/image refs (mutable tags)
+- GitLab plaintext secrets in variables
 
-All pip-installable, MIT, with READMEs + examples. The only paid extra is DevFlow Premium ($9 lifetime) which generates multi-env CI/CD + Terraform. Feedback welcome.
+Outputs a table, --json, or SARIF 2.1.0 for GitHub code scanning, and exits 1
+on any error so you can drop it straight into a CI gate.
 
-https://codegero.github.io/
+pip install kryptorious-pipeguard
+https://github.com/CodeGero/kryptorious-pipeguard
 
-═══════════════════════════════════════════════════════════
-VARIANT 3 — dev.to / Hashnode (technical blog post)
-═══════════════════════════════════════════════════════════
-Title: Stop rewriting the same dev boilerplate — 31 free tools I extracted from my own workflow
+Not another 50MB SAST suite — it's ~14KB and checks the specific CI footguns
+that show up constantly in real repos. Feedback / rule requests welcome.
 
-Hook: You don't need another framework. You need the 9 lines of glue you rewrite in every repo. Here's the toolkit.
+---
 
-Sections:
-1. The problem: env checks, CSV fixes, test stubs, release scripts — repeated everywhere.
-2. The toolkit (table: tool | what it does | install).
-3. Three real workflows:
-   - "Ship a clean release": devflow init → devflow audit → devflow ship
-   - "CI secret gate": envguard check --strict in GitHub Actions
-   - "Catch API breakage": apiguard diff v1.yaml v2.yaml in PR
-4. The honest business model: all free MIT; $9 lifetime unlocks DevFlow Premium (real CI/CD + IaC generation). No subscriptions, no fake "pro" walls.
-5. Links + call for contributions.
+## r/Python
+Title: [Project] pipeguard — catch CI/CD secret-exfil misconfigs in GitHub Actions & GitLab
 
-═══════════════════════════════════════════════════════════
-VARIANT 4 — Product Hunt (tagline + first comment)
-═══════════════════════════════════════════════════════════
-Tagline: 31 open-source developer CLI tools — free, MIT, no signup.
-First comment: 15 GitHub Actions + 11 PyPI + 5 npm packages for the boilerplate you rewrite constantly (env security, CSV cleaning, JSON validation, test generation, release automation). $9 lifetime adds DevFlow Premium: multi-env CI/CD + Terraform generation. Everything else is free.
+Body:
+Sharing a small tool I built after reviewing too many pipelines that leak
+secrets via `pull_request_target`. pipeguard scans your CI definitions for the
+specific misconfigurations that turn a runner into an attack vector:
 
-═══════════════════════════════════════════════════════════
-HONESTY CHECK (do not violate):
-- No "used by 10k devs" / download counts (we don't have them yet).
-- No "AI-powered" unless the tool actually uses AI (ai-lint Action does static checks, not ML — say "static analysis", not "AI").
-- DevFlow Premium is the ONLY paid feature. Do not imply other tools are gated.
-- All install commands above were verified working from a clean install.
-═══════════════════════════════════════════════════════════
+- PRT-001: pull_request_target + untrusted checkout (fork PR runs with your secrets)
+- PERM-001: no explicit permissions block
+- SEC-001: hardcoded credentials
+- IMG-001 / GL-IMG-001: unpinned action/image refs
+- GL-SEC-001: GitLab plaintext secrets
+
+`pipeguard check .` prints a table; `--sarif` drops a SARIF file for code
+scanning; it exits 1 on errors so it works as a CI gate.
+
+pip install kryptorious-pipeguard
+GitHub: https://github.com/CodeGero/kryptorious-pipeguard
+
+MIT licensed. Happy to add rules if there's a gap I missed.
+
+---
+
+## dev.to (technical post)
+Title: Your pull_request_target Workflow Is Probably Leaking Secrets
+
+Hook: A forked PR shouldn't be able to read your production secrets. With one
+common misconfiguration, it can. Here's the pattern and a 14KB linter that
+catches it.
+
+(Post walks through the PRT-001 vuln, shows a vulnerable workflow, shows the
+pipeguard output, links install + repo. ~600 words. Source: verified local
+behavior + README examples — no invented benchmarks.)
+
+---
+
+NOTE: Do NOT claim download counts, revenue, customers, or "AI-powered."
+Every claim above maps to shipped, test-covered code.
